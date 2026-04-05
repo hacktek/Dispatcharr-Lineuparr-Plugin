@@ -194,16 +194,21 @@ Place the file in the plugin directory and select it in the **Lineup File** sett
 
 ## Custom Aliases
 
-Override or extend the built-in alias table using the **Custom Channel Aliases** setting. Provide a JSON object where keys are lineup channel names and values are arrays of aliases:
+Override or extend the built-in alias table using the **Custom Channel Aliases (JSON)** setting. Paste a JSON object where keys are the **exact lineup channel name** (as it appears in the lineup JSON) and values are arrays of alternate names your IPTV provider uses for that channel:
 
 ```json
 {
-  "My Local Channel": ["LOCAL HD", "Local TV", "WXYZ"],
-  "CNN": ["CNN US", "CNN America", "Cable News"]
+  "FOX News Channel": ["FOX NEWS HD", "FoxNews", "Fox News USA"],
+  "HISTORY Channel, The": ["HISTORY", "History Channel HD", "History US"],
+  "My Local Station": ["WABC", "WABC-TV", "ABC 7 New York"]
 }
 ```
 
-Custom aliases are merged on top of built-in aliases, so you only need to specify additions or overrides.
+**How to find the right key:** Open the lineup JSON file and look for the exact `"name"` value of the channel you want to add aliases for. For example, if the lineup has `"name": "HISTORY Channel, The"`, use that exact string as the key.
+
+**How to find what to alias to:** Run **Preview Stream Match** and check the CSV export for unmatched channels. The stream names shown in your M3U source are what you should add as alias values.
+
+Custom aliases are merged on top of the 200+ built-in aliases, so you only need to specify additions or overrides for channels that aren't matching automatically.
 
 ## Troubleshooting
 
@@ -246,9 +251,17 @@ docker restart dispatcharr
 
 ## Contributing
 
+### Reporting Issues
 When reporting issues:
 1. Include Dispatcharr version information
 2. Provide relevant container logs (`docker logs dispatcharr | grep "Lineuparr"`)
-3. Include the lineup file and M3U source details
-4. Run **Preview Stream Match** and attach the CSV export
-5. Note your **Match Sensitivity** setting
+3. Run **Preview Stream Match** and attach the CSV export -- this is the most helpful thing you can share. **Make sure no stream URLs are included in the CSV before sharing.**
+4. Note your **Match Sensitivity** setting and lineup file used
+
+### Submitting Lineup Databases
+We welcome community-contributed lineup files! If you have a TV provider lineup that isn't included, please submit it as a pull request or open an issue with:
+- Provider name and country
+- Channel list with channel numbers and categories
+- Source where the lineup data was obtained
+
+If you'd like a specific provider added but can't create the file yourself, open a **Lineup Request** issue with the provider name, country, and a link to their channel listing page.
