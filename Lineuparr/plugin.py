@@ -48,7 +48,7 @@ LOG_PREFIX = "[Lineuparr]"
 
 
 class PluginConfig:
-    PLUGIN_VERSION = "1.26.1001146"
+    PLUGIN_VERSION = "1.26.1021446"
 
     DEFAULT_FUZZY_MATCH_THRESHOLD = 80
     DEFAULT_PRIORITIZE_QUALITY = True
@@ -567,7 +567,7 @@ class Plugin:
         """Get the group prefix (user override or auto from lineup package name).
         'none' = no prefix (category names only). Blank = auto from package.
         Trailing separators preserved so 'US ' gives 'US News', not 'US: News'."""
-        prefix = settings.get("group_prefix", "").lstrip()
+        prefix = (settings.get("group_prefix") or "").lstrip()
         if prefix.strip().lower() == "none":
             return ""
         if prefix.strip():
@@ -644,7 +644,7 @@ class Plugin:
         elif mode == "auto_highest":
             start = (max(used) + 1) if used else 1
         elif mode == "specific":
-            raw = settings.get("starting_channel_number", "").strip()
+            raw = (settings.get("starting_channel_number") or "").strip()
             start = int(raw) if raw.isdigit() and int(raw) > 0 else 1
         else:
             start = 1
@@ -664,7 +664,7 @@ class Plugin:
 
     def _resolve_m3u_sources(self, settings, logger):
         """Resolve M3U source names to account IDs. Returns (valid_ids, m3u_priority_map, warnings)."""
-        m3u_str = settings.get("m3u_sources", "").strip()
+        m3u_str = (settings.get("m3u_sources") or "").strip()
         if not m3u_str or m3u_str == "_all":
             return None, {}, []
 
@@ -706,7 +706,7 @@ class Plugin:
         """Merge built-in aliases with user custom aliases."""
         alias_map = dict(CHANNEL_ALIASES)
 
-        custom_str = settings.get("custom_aliases", "").strip()
+        custom_str = (settings.get("custom_aliases") or "").strip()
         if custom_str:
             try:
                 custom = json.loads(custom_str)
@@ -732,7 +732,7 @@ class Plugin:
         all_epg = list(EPGData.objects.all().values('id', 'name', 'tvg_id', 'epg_source'))
         logger.info(f"{LOG_PREFIX} Fetched {len(all_epg)} EPG data entries")
 
-        epg_sources_str = settings.get("epg_sources", "").strip()
+        epg_sources_str = (settings.get("epg_sources") or "").strip()
         if not epg_sources_str or epg_sources_str == "_all":
             return all_epg
 
@@ -802,7 +802,7 @@ class Plugin:
     def _resolve_channel_profiles(self, settings, logger):
         """Resolve comma-separated profile names to profile objects.
         Returns list of {'id': int, 'name': str} dicts, or empty list if not configured."""
-        profiles_str = settings.get("channel_profiles", "").strip()
+        profiles_str = (settings.get("channel_profiles") or "").strip()
         if not profiles_str or profiles_str == "_none":
             return []
 
@@ -1061,7 +1061,7 @@ class Plugin:
                   "auto_highest": "Auto-Assign After Highest", "specific": "Use Specific Number"}
         label = labels.get(numbering, numbering)
         if numbering == "specific":
-            raw = settings.get("starting_channel_number", "").strip()
+            raw = (settings.get("starting_channel_number") or "").strip()
             if raw and raw.isdigit() and int(raw) > 0:
                 results.append({"Setting": "Channel Numbering", "Value": f"{label} (start: {raw})", "Status": "OK"})
             else:
@@ -1074,7 +1074,7 @@ class Plugin:
             errors += 1
 
         # Check M3U sources
-        m3u_str = settings.get("m3u_sources", "").strip()
+        m3u_str = (settings.get("m3u_sources") or "").strip()
         if m3u_str and m3u_str != "_all":
             valid_ids, _, warnings = self._resolve_m3u_sources(settings, logger)
             if valid_ids:
@@ -1089,7 +1089,7 @@ class Plugin:
             results.append({"Setting": "M3U Sources", "Value": "(all)", "Status": f"OK (using all - {stream_count} streams)"})
 
         # Check custom aliases
-        custom_str = settings.get("custom_aliases", "").strip()
+        custom_str = (settings.get("custom_aliases") or "").strip()
         if custom_str:
             try:
                 custom = json.loads(custom_str)
@@ -1105,7 +1105,7 @@ class Plugin:
             results.append({"Setting": "Custom Aliases", "Value": "(none)", "Status": f"OK (using {len(CHANNEL_ALIASES)} built-in aliases)"})
 
         # Check channel profiles
-        profiles_str = settings.get("channel_profiles", "").strip()
+        profiles_str = (settings.get("channel_profiles") or "").strip()
         if profiles_str:
             resolved = self._resolve_channel_profiles(settings, logger)
             profile_names = [p.strip() for p in profiles_str.split(",") if p.strip()]
@@ -1126,7 +1126,7 @@ class Plugin:
                 source_count = EPGSource.objects.count()
                 results.append({"Setting": "EPG Data", "Value": f"{epg_count} entries from {source_count} sources", "Status": "OK"})
 
-                epg_sources_str = settings.get("epg_sources", "").strip()
+                epg_sources_str = (settings.get("epg_sources") or "").strip()
                 if epg_sources_str and epg_sources_str != "_all":
                     filtered = self._get_filtered_epg_data(settings, logger)
                     results.append({"Setting": "EPG Sources Filter", "Value": epg_sources_str, "Status": f"OK ({len(filtered)} entries after filtering)"})
@@ -1301,6 +1301,9 @@ class Plugin:
             alias_map = self._build_alias_map(settings, logger)
             streams = self._get_all_streams(settings, logger)
             assigner = self._init_assigner_state(settings)
+            lineup_cc, _ = self._parse_lineup_filename(settings.get("lineup_file", ""))
+            if lineup_cc:
+                logger.info(f"{LOG_PREFIX} Filtering streams to country: {lineup_cc}")
 
             if not streams:
                 logger.error(f"{LOG_PREFIX} No streams found. Check M3U sources.")
@@ -1316,6 +1319,7 @@ class Plugin:
 
             # Pre-normalize stream names for performance
             matcher.precompute_normalizations(unique_stream_names)
+            matcher.country_filter_drops = 0
 
             results = []
             matched_count = 0
@@ -1340,7 +1344,8 @@ class Plugin:
 
                     matches = matcher.match_all_streams(
                         ch_name, unique_stream_names, alias_map,
-                        channel_number=boost_number
+                        channel_number=boost_number,
+                        lineup_country=lineup_cc,
                     )
 
                     if matches:
@@ -1378,6 +1383,12 @@ class Plugin:
                     progress.update()
 
             progress.finish()
+
+            if lineup_cc and matcher.country_filter_drops:
+                logger.info(
+                    f"{LOG_PREFIX} Country filter dropped "
+                    f"{matcher.country_filter_drops} cross-country candidate(s)"
+                )
 
             # Sort: unmatched first, then by score ascending
             results.sort(key=lambda r: (0 if r["Score"] == 0 else 1, r["Score"]))
@@ -1892,6 +1903,9 @@ class Plugin:
             matcher = self._init_fuzzy_matcher(settings, logger)
             alias_map = self._build_alias_map(settings, logger)
             rate_limiter = SmartRateLimiter(settings.get("rate_limiting", PluginConfig.DEFAULT_RATE_LIMITING))
+            lineup_cc, _ = self._parse_lineup_filename(settings.get("lineup_file", ""))
+            if lineup_cc:
+                logger.info(f"{LOG_PREFIX} Filtering streams to country: {lineup_cc}")
 
             # Get streams
             all_streams = self._get_all_streams(settings, logger)
@@ -1909,6 +1923,7 @@ class Plugin:
 
             # Pre-normalize stream names for performance
             matcher.precompute_normalizations(unique_stream_names)
+            matcher.country_filter_drops = 0
 
             # Get existing groups and channels
             existing_groups = {g['name']: g['id'] for g in ChannelGroup.objects.all().values('id', 'name')}
@@ -1953,7 +1968,8 @@ class Plugin:
                     # Match streams using deduplicated names
                     matches = matcher.match_all_streams(
                         ch_name, unique_stream_names, alias_map,
-                        channel_number=ch_number
+                        channel_number=ch_number,
+                        lineup_country=lineup_cc,
                     )
 
                     if matches:
@@ -2011,6 +2027,12 @@ class Plugin:
                     progress.update()
 
             progress.finish()
+
+            if lineup_cc and matcher.country_filter_drops:
+                logger.info(
+                    f"{LOG_PREFIX} Country filter dropped "
+                    f"{matcher.country_filter_drops} cross-country candidate(s)"
+                )
 
             # Export CSV
             ts = datetime.now().strftime("%Y%m%d_%H%M%S")

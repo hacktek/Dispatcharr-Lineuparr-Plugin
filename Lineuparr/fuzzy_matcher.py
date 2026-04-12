@@ -60,6 +60,76 @@ MISC_PATTERNS = [
     r'\s*\([^)]*\)\s*',
 ]
 
+# ISO-2 country codes Lineuparr lineup filenames use (keep in sync with
+# PROVIDER_PREFIX_PATTERNS above and PluginConfig.COUNTRY_DIR_MAP).
+_KNOWN_COUNTRY_CODES = {
+    "US", "UK", "CA", "AU", "DE", "FR", "IT", "ES", "NL", "BR", "MX", "IN",
+    "IE", "SE", "NO", "DK", "PT", "PL", "AT", "CH", "BE", "FI",
+}
+
+# ISO-3 or colloquial codes seen in M3U streams → ISO-2.
+_ISO3_TO_ISO2 = {
+    "USA": "US", "MEX": "MX", "IRE": "IE", "GER": "DE", "FRA": "FR",
+    "ITA": "IT", "ESP": "ES", "NLD": "NL", "BRA": "BR", "IND": "IN",
+}
+
+# (PLUTO <COUNTRY>) full-name variants seen in the M3U.
+_PLUTO_COUNTRY_MAP = {
+    "USA": "US", "US": "US", "UK": "UK",
+    "BRAZIL": "BR", "SWEDEN": "SE", "NORWAY": "NO", "DENMARK": "DK",
+    "GERMANY": "DE", "SPAIN": "ES", "FRANCE": "FR", "ITALY": "IT",
+    "CANADA": "CA", "MEXICO": "MX", "INDIA": "IN", "IRELAND": "IE",
+    "AUSTRALIA": "AU", "NETHERLANDS": "NL",
+    # "LATIN"/"EUROPE" etc. intentionally omitted — ambiguous region.
+}
+
+# Country pairs that share enough cross-border channels (CBS, ABC, ESPN, A&E,
+# TSN, etc.) that users consider them interchangeable. A US lineup should still
+# accept a `(CA) ESPN` stream and vice versa.
+_COMPATIBLE_COUNTRIES = {
+    "US": {"CA"},
+    "CA": {"US"},
+}
+
+
+def _normalize_country_token(tok):
+    """Map a raw prefix token to a whitelisted ISO-2 code, else None."""
+    tok = tok.upper()
+    if tok in _KNOWN_COUNTRY_CODES:
+        return tok
+    mapped = _ISO3_TO_ISO2.get(tok)
+    return mapped if mapped in _KNOWN_COUNTRY_CODES else None
+
+
+def detect_stream_country(name):
+    """Detect ISO-2 country code from a stream name's leading prefix marker.
+
+    Recognizes: `(US) ...`, `(USA) ...`, `US: ...`, `MEX: ...`, `(PLUTO UK) ...`
+    (case-insensitive).
+    Returns None when no recognized marker is present (so callers can accept
+    unlabeled streams). Also returns None for look-alike prefixes like `NBC`
+    or `FOX` that match the shape but aren't in the country whitelist.
+    """
+    if not name:
+        return None
+
+    # Pluto path uses its own full-country-name map rather than _normalize_country_token
+    # (which reads _ISO3_TO_ISO2). The whitelist intersection is still enforced here.
+    m = re.match(r'^\s*\(\s*PLUTO\s+([A-Za-z]+)\s*\)', name, re.IGNORECASE)
+    if m:
+        mapped = _PLUTO_COUNTRY_MAP.get(m.group(1).upper())
+        return mapped if mapped in _KNOWN_COUNTRY_CODES else None
+
+    m = re.match(r'^\s*\(\s*([A-Za-z]{2,3})\s*\)', name)
+    if m:
+        return _normalize_country_token(m.group(1))
+
+    m = re.match(r'^\s*([A-Za-z]{2,3})\s*[:|]', name)
+    if m:
+        return _normalize_country_token(m.group(1))
+
+    return None
+
 
 class FuzzyMatcher:
     """Handles fuzzy matching for Lineuparr with alias support and channel number boosting."""
@@ -71,6 +141,10 @@ class FuzzyMatcher:
         self._norm_cache = {}  # raw_name -> normalized_lower
         self._norm_nospace_cache = {}  # raw_name -> normalized_nospace
         self._processed_cache = {}  # raw_name -> processed_for_matching
+        # Cumulative count of candidates dropped by the country filter across
+        # match_all_streams calls. Callers reset this before a matching loop
+        # and read it after, so they can log a summary.
+        self.country_filter_drops = 0
 
     def precompute_normalizations(self, names, user_ignored_tags=None):
         """
@@ -476,7 +550,7 @@ class FuzzyMatcher:
         return None, 0, None
 
     def match_all_streams(self, lineup_name, candidate_names, alias_map, channel_number=None,
-                          user_ignored_tags=None):
+                          user_ignored_tags=None, lineup_country=None):
         """
         Full matching pipeline for Lineuparr: alias → exact → substring → fuzzy, with number boost.
         Returns ALL matching streams sorted by score.
@@ -566,6 +640,28 @@ class FuzzyMatcher:
                     # Apply channel number boost
                     boost = self._channel_number_boost(candidate, channel_number)
                     all_matches[candidate] = (min(score + boost, 100), mtype)
+
+        # Filter out wrong-country matches. A stream whose name carries a
+        # recognized country marker (e.g. "UK: Discovery Channel", "(IN) Bloomberg",
+        # "(PLUTO Brazil) MTV") and that marker differs from the lineup's country
+        # is dropped. Streams without a country marker are kept — we can't prove
+        # they're wrong and over-filtering breaks lineups whose M3U sources don't
+        # tag country at all. Countries in _COMPATIBLE_COUNTRIES (US↔CA) are
+        # treated as a single compatibility class.
+        if lineup_country:
+            lc = lineup_country.upper()
+            # Defensive: if caller passes an unrecognized code, skip filtering
+            # rather than drop every country-marked candidate.
+            if lc in _KNOWN_COUNTRY_CODES:
+                accepted = _COMPATIBLE_COUNTRIES.get(lc, set()) | {lc}
+                kept = {}
+                for name, val in all_matches.items():
+                    sc = detect_stream_country(name)
+                    if sc is None or sc in accepted:
+                        kept[name] = val
+                    else:
+                        self.country_filter_drops += 1
+                all_matches = kept
 
         # Filter out wrong-region matches (East vs West vs Pacific)
         # Check both normalized query AND original name for regional indicators.

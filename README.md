@@ -27,6 +27,7 @@ Before installing or using this plugin, it is **highly recommended** that you cr
 - **Quality Ordering:** Automatically sort matched streams by quality (4K > UHD > FHD > HD > SD) using name-based detection or [IPTV Checker](https://github.com/PiratesIRC/Dispatcharr-IPTV-Checker-Plugin) metadata
 - **Channel Number Preservation:** Lineup channel numbers are stored and used for tiebreaking during matching
 - **East/West/Pacific Filtering:** Regional channel variants are matched to the correct regional streams
+- **Country-Aware Matching:** Streams whose name prefix indicates a different country than the active lineup (e.g. `UK: Discovery Channel`, `(IN) Bloomberg TV`, `(PLUTO Brazil) MTV`) are rejected automatically. US and CA lineups share compatibility so border-network streams are preserved.
 - **Built-in Alias Table:** 200+ channel alias mappings for common IPTV naming variations (CNN US, Fox News Channel, ESPN 2, etc.)
 - **Custom Aliases:** User-configurable JSON alias overrides merged on top of built-in aliases
 - **Match Sensitivity Modes:** Relaxed, Normal, Strict, and Exact sensitivity presets
@@ -282,6 +283,14 @@ When reporting issues:
 2. Provide relevant container logs (`docker logs dispatcharr | grep "Lineuparr"`)
 3. Run **Preview Stream Match** and attach the CSV export -- this is the most helpful thing you can share. **Make sure no stream URLs are included in the CSV before sharing.**
 4. Note your **Match Sensitivity** setting and lineup file used
+
+### Bumping the Plugin Version
+Version format: `1.26.{DDD}{HHMM}` (3-digit day-of-year + 4-digit UTC time). Both `Lineuparr/plugin.json` and `PluginConfig.PLUGIN_VERSION` in `Lineuparr/plugin.py` must stay in sync. Use the helper script to update both at once:
+
+```bash
+python3 bump_version.py              # auto from current UTC time
+python3 bump_version.py 1.26.1031200 # explicit
+```
 
 ### Submitting Lineup Databases
 We welcome community-contributed lineup files! If you have a TV provider lineup that isn't included, please submit it as a pull request or open an issue with:
