@@ -2017,6 +2017,7 @@ class Plugin:
             channels_unmatched = 0
             total_streams_attached = 0
             csv_rows = []
+            unmatched_channel_names = []
 
             for category, channels in lineup["categories"].items():
                 group_name = self._make_group_name(prefix, category)
@@ -2026,6 +2027,7 @@ class Plugin:
                     logger.warning(f"{LOG_PREFIX} Group '{group_name}' not found, skipping category '{category}'")
                     for entry in channels:
                         channels_unmatched += 1
+                        unmatched_channel_names.append(entry["name"])
                         progress.update()
                     continue
 
@@ -2041,6 +2043,7 @@ class Plugin:
                     if not channel_id:
                         logger.debug(f"{LOG_PREFIX} Channel '{ch_name}' not in DB, skipping")
                         channels_unmatched += 1
+                        unmatched_channel_names.append(ch_name)
                         progress.update()
                         continue
 
@@ -2096,6 +2099,7 @@ class Plugin:
                         })
                     else:
                         channels_unmatched += 1
+                        unmatched_channel_names.append(ch_name)
                         csv_rows.append({
                             "Channel": ch_name,
                             "Number": ch_number if ch_number else "",
@@ -2172,6 +2176,11 @@ class Plugin:
             msg += f" Cleaned up {cleanup_count} unmatched channels."
         msg += " CSV exported."
         logger.info(f"{LOG_PREFIX} {msg}")
+        if unmatched_channel_names:
+            logger.info(
+                f"{LOG_PREFIX} Unmatched channels: "
+                + ", ".join(sorted(unmatched_channel_names, key=str.casefold))
+            )
         return {"status": "ok", "message": msg}
 
     def _do_apply_epg_match_bg(self, settings, logger):
