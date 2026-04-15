@@ -380,7 +380,7 @@ class Plugin:
                 "label": "Custom Channel Aliases (advanced)",
                 "type": "string",
                 "default": "",
-                "help_text": "JSON mapping extra names to lineup channels. Leave blank to use built-in aliases only.",
+                "help_text": "JSON object or path to JSON file with extra names mapped to lineup channels. Leave blank to use built-in aliases only.",
             },
             {
                 "id": "epg_sources",
@@ -716,22 +716,67 @@ class Plugin:
         """Merge built-in aliases with user custom aliases."""
         alias_map = dict(CHANNEL_ALIASES)
 
-        custom_str = (settings.get("custom_aliases") or "").strip()
-        if custom_str:
-            try:
-                custom = json.loads(custom_str)
-                if isinstance(custom, dict):
-                    for k, v in custom.items():
-                        if isinstance(v, list):
-                            if k in alias_map:
-                                alias_map[k] = list(dict.fromkeys(alias_map[k] + v))
-                            else:
-                                alias_map[k] = v
-                    logger.info(f"{LOG_PREFIX} Merged {len(custom)} custom aliases")
-            except json.JSONDecodeError as e:
-                logger.warning(f"{LOG_PREFIX} Failed to parse custom_aliases JSON: {e}")
+        custom, source, error = self._load_custom_aliases(settings)
+        if error:
+            logger.warning(f"{LOG_PREFIX} Failed to load custom_aliases: {error}")
+            return alias_map
+
+        if isinstance(custom, dict):
+            for k, v in custom.items():
+                if isinstance(v, list):
+                    if k in alias_map:
+                        alias_map[k] = list(dict.fromkeys(alias_map[k] + v))
+                    else:
+                        alias_map[k] = v
+            logger.info(f"{LOG_PREFIX} Merged {len(custom)} custom aliases from {source}")
 
         return alias_map
+
+    def _load_custom_aliases(self, settings):
+        """Load custom aliases from inline JSON or JSON file path."""
+        custom_str = (settings.get("custom_aliases") or "").strip()
+        if not custom_str:
+            return None, None, None
+
+        try:
+            custom = json.loads(custom_str)
+        except json.JSONDecodeError:
+            custom = None
+        else:
+            if isinstance(custom, dict):
+                return custom, "inline JSON", None
+            return None, None, "must be JSON object"
+
+        plugin_dir = os.path.dirname(__file__)
+        search_paths = []
+        if os.path.isabs(custom_str):
+            search_paths.append(custom_str)
+        else:
+            search_paths.extend([
+                custom_str,
+                os.path.join(os.getcwd(), custom_str),
+                os.path.join(plugin_dir, custom_str),
+                os.path.join(PluginConfig.DATA_DIR, custom_str),
+            ])
+
+        seen = set()
+        for path in search_paths:
+            norm_path = os.path.normpath(path)
+            if norm_path in seen:
+                continue
+            seen.add(norm_path)
+            if not os.path.isfile(norm_path):
+                continue
+            try:
+                with open(norm_path, "r", encoding="utf-8") as fh:
+                    custom = json.load(fh)
+            except (OSError, json.JSONDecodeError) as e:
+                return None, norm_path, str(e)
+            if not isinstance(custom, dict):
+                return None, norm_path, "must be JSON object"
+            return custom, norm_path, None
+
+        return None, None, f"not valid JSON and file not found: {custom_str}"
 
     def _get_filtered_epg_data(self, settings, logger):
         """Fetch EPG data, optionally filtered and prioritized by selected sources."""
@@ -1129,15 +1174,11 @@ class Plugin:
         # Check custom aliases
         custom_str = (settings.get("custom_aliases") or "").strip()
         if custom_str:
-            try:
-                custom = json.loads(custom_str)
-                if isinstance(custom, dict):
-                    results.append({"Setting": "Custom Aliases", "Value": f"{len(custom)} entries", "Status": "OK"})
-                else:
-                    results.append({"Setting": "Custom Aliases", "Value": "", "Status": "ERROR: Must be a JSON object"})
-                    errors += 1
-            except json.JSONDecodeError as e:
-                results.append({"Setting": "Custom Aliases", "Value": "", "Status": f"ERROR: Invalid JSON - {e}"})
+            custom, source, error = self._load_custom_aliases(settings)
+            if isinstance(custom, dict):
+                results.append({"Setting": "Custom Aliases", "Value": f"{len(custom)} entries", "Status": f"OK ({source})"})
+            else:
+                results.append({"Setting": "Custom Aliases", "Value": "", "Status": f"ERROR: {error}"})
                 errors += 1
         else:
             results.append({"Setting": "Custom Aliases", "Value": "(none)", "Status": f"OK (using {len(CHANNEL_ALIASES)} built-in aliases)"})
