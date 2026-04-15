@@ -9,6 +9,7 @@ Forked from Stream-Mapparr's fuzzy_matcher.py (v26.018.0100) with enhancements:
 import re
 import logging
 import unicodedata
+from collections.abc import Iterable
 
 __version__ = "1.0.0"
 
@@ -60,17 +61,20 @@ MISC_PATTERNS = [
     r'\s*\([^)]*\)\s*',
 ]
 
-# ISO-2 country codes Lineuparr lineup filenames use (keep in sync with
-# PROVIDER_PREFIX_PATTERNS above and PluginConfig.COUNTRY_DIR_MAP).
+# Country/region codes Lineuparr recognizes in stream-name prefixes.
+# Includes ISO-2 lineup codes plus provider-specific region tags we want
+# country filter to treat as explicit non-matching markers.
 _KNOWN_COUNTRY_CODES = {
     "US", "UK", "CA", "AU", "DE", "FR", "IT", "ES", "NL", "BR", "MX", "IN",
-    "IE", "SE", "NO", "DK", "PT", "PL", "AT", "CH", "BE", "FI",
+    "IE", "SE", "NO", "DK", "PT", "PL", "AT", "CH", "BE", "FI", "AR", "CO",
+    "CAR", "LAT",
 }
 
 # ISO-3 or colloquial codes seen in M3U streams → ISO-2.
 _ISO3_TO_ISO2 = {
     "USA": "US", "MEX": "MX", "IRE": "IE", "GER": "DE", "FRA": "FR",
     "ITA": "IT", "ESP": "ES", "NLD": "NL", "BRA": "BR", "IND": "IN",
+    "ARG": "AR", "COL": "CO",
 }
 
 # (PLUTO <COUNTRY>) full-name variants seen in the M3U.
@@ -121,6 +125,10 @@ def detect_stream_country(name):
         return mapped if mapped in _KNOWN_COUNTRY_CODES else None
 
     m = re.match(r'^\s*\(\s*([A-Za-z]{2,3})\s*\)', name)
+    if m:
+        return _normalize_country_token(m.group(1))
+
+    m = re.match(r'^\s*\[\s*([A-Za-z]{2,3})\s*\]', name)
     if m:
         return _normalize_country_token(m.group(1))
 
@@ -310,6 +318,25 @@ class FuzzyMatcher:
         return base_threshold
 
     @staticmethod
+    def _extract_standalone_numbers(value):
+        """Extract standalone number tokens from a normalized channel name."""
+        if not value:
+            return []
+        return re.findall(r'\b\d+\b', value)
+
+    def _has_conflicting_number_tokens(self, query_name, candidate_name):
+        """Reject candidates whose standalone number tokens disagree with query."""
+        query_numbers = self._extract_standalone_numbers(query_name)
+        if not query_numbers:
+            return False
+
+        candidate_numbers = self._extract_standalone_numbers(candidate_name)
+        if not candidate_numbers:
+            return False
+
+        return query_numbers != candidate_numbers
+
+    @staticmethod
     def _has_token_overlap(str_a, str_b, min_token_len=4, require_majority=False):
         """Check that distinctive tokens are shared between two strings.
 
@@ -418,6 +445,8 @@ class FuzzyMatcher:
             if not candidate_lower:
                 continue
 
+            if self._has_conflicting_number_tokens(lineup_name, candidate):
+                continue
             # Check exact match against any alias (spaced or nospace)
             if candidate_lower in alias_lookup or candidate_nospace in alias_lookup:
                 matches.append((candidate, 100, "alias"))
@@ -488,6 +517,8 @@ class FuzzyMatcher:
             if not candidate_lower:
                 continue
 
+            if self._has_conflicting_number_tokens(query_name, candidate):
+                continue
             # Stage 1: Exact match
             if normalized_query_nospace == candidate_nospace:
                 return candidate, 100, "exact"
@@ -596,6 +627,8 @@ class FuzzyMatcher:
                 if not candidate_lower:
                     continue
 
+                if self._has_conflicting_number_tokens(lineup_name, candidate):
+                    continue
                 score = 0
                 mtype = None
 
@@ -649,11 +682,23 @@ class FuzzyMatcher:
         # tag country at all. Countries in _COMPATIBLE_COUNTRIES (US↔CA) are
         # treated as a single compatibility class.
         if lineup_country:
-            lc = lineup_country.upper()
-            # Defensive: if caller passes an unrecognized code, skip filtering
-            # rather than drop every country-marked candidate.
-            if lc in _KNOWN_COUNTRY_CODES:
-                accepted = _COMPATIBLE_COUNTRIES.get(lc, set()) | {lc}
+            if isinstance(lineup_country, str):
+                requested_countries = {lineup_country.upper()}
+            elif isinstance(lineup_country, Iterable):
+                requested_countries = {
+                    str(country).upper() for country in lineup_country if country
+                }
+            else:
+                requested_countries = set()
+
+            # Defensive: ignore unknown codes rather than over-filter.
+            requested_countries &= _KNOWN_COUNTRY_CODES
+
+            if requested_countries:
+                accepted = set(requested_countries)
+                for country in requested_countries:
+                    accepted |= _COMPATIBLE_COUNTRIES.get(country, set())
+
                 kept = {}
                 for name, val in all_matches.items():
                     sc = detect_stream_country(name)
@@ -728,4 +773,3 @@ class FuzzyMatcher:
         results = [(name, score, mtype) for name, (score, mtype) in all_matches.items()]
         results.sort(key=lambda x: x[1], reverse=True)
         return results
-

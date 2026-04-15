@@ -17,7 +17,7 @@ from glob import glob
 
 from django.db import transaction
 
-from .fuzzy_matcher import FuzzyMatcher
+from .fuzzy_matcher import FuzzyMatcher, detect_stream_country, _COMPATIBLE_COUNTRIES
 from .aliases import CHANNEL_ALIASES
 
 from apps.channels.models import Channel, ChannelGroup, ChannelProfile, ChannelProfileMembership, ChannelStream, Stream
@@ -48,7 +48,7 @@ LOG_PREFIX = "[Lineuparr]"
 
 
 class PluginConfig:
-    PLUGIN_VERSION = "1.26.1021446"
+    PLUGIN_VERSION = "1.27.0414001"
 
     DEFAULT_FUZZY_MATCH_THRESHOLD = 80
     DEFAULT_PRIORITIZE_QUALITY = True
@@ -236,9 +236,10 @@ class Plugin:
                 if isinstance(data.get("categories"), dict):
                     chans = sum(len(v) for v in data["categories"].values())
                     date_str = data.get("date", "")
-                    cc, provider = self._parse_lineup_filename(fname)
-                    if cc and provider:
-                        base = f"{provider.replace('-', ' ')} ({cc}) - {chans} channels"
+                    countries, provider = self._parse_lineup_filename_countries(fname)
+                    if countries and provider:
+                        cc_label = "-".join(countries)
+                        base = f"{provider.replace('-', ' ')} ({cc_label}) - {chans} channels"
                     else:
                         base = f"{data.get('package', fname)} ({chans} channels)"
                     label = f"{base} - {date_str}" if date_str else base
@@ -530,14 +531,23 @@ class Plugin:
         # Unknown detail value - treat as normal
         return result
 
+    def _parse_lineup_filename_countries(self, filename):
+        """Extract country codes and provider from lineup filename.
+        Formats:
+          - {CC}_{Provider}_lineup.json
+          - {CC-CC-CC}_{Provider}_lineup.json
+        Returns ([country_codes], provider) or ([], None) if format doesn't match.
+        """
+        match = re.match(r'^([A-Z]{2}(?:-[A-Z]{2})*)_(.+)_lineup\.json$', filename)
+        if not match:
+            return [], None
+        countries = [part for part in match.group(1).split('-') if part]
+        return countries, match.group(2)
+
     def _parse_lineup_filename(self, filename):
-        """Extract country code and provider from lineup filename.
-        Format: {CC}_{Provider}_lineup.json
-        Returns (country_code, provider) or (None, None) if format doesn't match."""
-        match = re.match(r'^([A-Z]{2})_(.+)_lineup\.json$', filename)
-        if match:
-            return match.group(1), match.group(2)
-        return None, None
+        """Legacy helper: return primary country code and provider from lineup filename."""
+        countries, provider = self._parse_lineup_filename_countries(filename)
+        return (countries[0], provider) if countries else (None, provider)
 
     @staticmethod
     def _extract_epg_country(tvg_id):
@@ -891,16 +901,44 @@ class Plugin:
             return 3
         return 5  # Unknown
 
-    def _sort_streams_by_quality(self, streams, prioritize_quality=True):
-        """Sort matched stream dicts by quality tier and M3U priority.
+    @staticmethod
+    def _get_country_sort_bucket(stream, lineup_countries=None):
+        """Bucket streams by country affinity.
+
+        Order:
+          0 = explicitly allowed country
+          1 = no detectable country tag
+          2 = explicit foreign country/region tag
+        """
+        if not lineup_countries:
+            return 0
+
+        requested = {str(country).upper() for country in lineup_countries if country}
+        if not requested:
+            return 0
+
+        accepted = set(requested)
+        for country in requested:
+            accepted |= _COMPATIBLE_COUNTRIES.get(country, set())
+
+        stream_country = detect_stream_country(stream.get('name', ''))
+        if stream_country is None:
+            return 1
+        if stream_country in accepted:
+            return 0
+        return 2
+
+    def _sort_streams_by_quality(self, streams, prioritize_quality=True, lineup_countries=None):
+        """Sort streams by country affinity, then quality/source preference.
         Uses probed resolution from stream_stats when available, falls back to name tags."""
         def get_quality_score(stream):
+            country_bucket = self._get_country_sort_bucket(stream, lineup_countries)
             m3u_priority = stream.get('_m3u_priority', 999)
             tier = self._get_quality_tier(stream)
             if prioritize_quality:
-                return (tier, m3u_priority)
+                return (country_bucket, tier, m3u_priority)
             else:
-                return (m3u_priority, tier)
+                return (country_bucket, m3u_priority, tier)
 
         return sorted(streams, key=get_quality_score)
 
@@ -1301,9 +1339,9 @@ class Plugin:
             alias_map = self._build_alias_map(settings, logger)
             streams = self._get_all_streams(settings, logger)
             assigner = self._init_assigner_state(settings)
-            lineup_cc, _ = self._parse_lineup_filename(settings.get("lineup_file", ""))
-            if lineup_cc:
-                logger.info(f"{LOG_PREFIX} Filtering streams to country: {lineup_cc}")
+            lineup_countries, _ = self._parse_lineup_filename_countries(settings.get("lineup_file", ""))
+            if lineup_countries:
+                logger.info(f"{LOG_PREFIX} Filtering streams to countries: {', '.join(lineup_countries)}")
 
             if not streams:
                 logger.error(f"{LOG_PREFIX} No streams found. Check M3U sources.")
@@ -1345,7 +1383,7 @@ class Plugin:
                     matches = matcher.match_all_streams(
                         ch_name, unique_stream_names, alias_map,
                         channel_number=boost_number,
-                        lineup_country=lineup_cc,
+                        lineup_country=lineup_countries,
                     )
 
                     if matches:
@@ -1384,7 +1422,7 @@ class Plugin:
 
             progress.finish()
 
-            if lineup_cc and matcher.country_filter_drops:
+            if lineup_countries and matcher.country_filter_drops:
                 logger.info(
                     f"{LOG_PREFIX} Country filter dropped "
                     f"{matcher.country_filter_drops} cross-country candidate(s)"
@@ -1903,9 +1941,9 @@ class Plugin:
             matcher = self._init_fuzzy_matcher(settings, logger)
             alias_map = self._build_alias_map(settings, logger)
             rate_limiter = SmartRateLimiter(settings.get("rate_limiting", PluginConfig.DEFAULT_RATE_LIMITING))
-            lineup_cc, _ = self._parse_lineup_filename(settings.get("lineup_file", ""))
-            if lineup_cc:
-                logger.info(f"{LOG_PREFIX} Filtering streams to country: {lineup_cc}")
+            lineup_countries, _ = self._parse_lineup_filename_countries(settings.get("lineup_file", ""))
+            if lineup_countries:
+                logger.info(f"{LOG_PREFIX} Filtering streams to countries: {', '.join(lineup_countries)}")
 
             # Get streams
             all_streams = self._get_all_streams(settings, logger)
@@ -1969,7 +2007,7 @@ class Plugin:
                     matches = matcher.match_all_streams(
                         ch_name, unique_stream_names, alias_map,
                         channel_number=ch_number,
-                        lineup_country=lineup_cc,
+                        lineup_country=lineup_countries,
                     )
 
                     if matches:
@@ -1982,7 +2020,11 @@ class Plugin:
                                 stream_obj_copy['_match_type'] = mtype
                                 matched_stream_objs.append(stream_obj_copy)
 
-                        sorted_streams = self._sort_streams_by_quality(matched_stream_objs, prioritize_quality)
+                        sorted_streams = self._sort_streams_by_quality(
+                            matched_stream_objs,
+                            prioritize_quality,
+                            lineup_countries=lineup_countries,
+                        )
 
                         if not dry_run:
                             try:
@@ -2028,7 +2070,7 @@ class Plugin:
 
             progress.finish()
 
-            if lineup_cc and matcher.country_filter_drops:
+            if lineup_countries and matcher.country_filter_drops:
                 logger.info(
                     f"{LOG_PREFIX} Country filter dropped "
                     f"{matcher.country_filter_drops} cross-country candidate(s)"
@@ -2326,6 +2368,7 @@ class Plugin:
         prioritize_quality = settings.get("prioritize_quality", PluginConfig.DEFAULT_PRIORITIZE_QUALITY)
         lineup = self._load_lineup(settings, logger)
         prefix = self._get_group_prefix(settings, lineup)
+        lineup_countries, _ = self._parse_lineup_filename_countries(settings.get("lineup_file", ""))
 
         # Find all Lineuparr-managed groups
         lineuparr_group_names = [
@@ -2362,7 +2405,11 @@ class Plugin:
                 })
 
             # Sort by quality
-            sorted_streams = self._sort_streams_by_quality(stream_dicts, prioritize_quality)
+            sorted_streams = self._sort_streams_by_quality(
+                stream_dicts,
+                prioritize_quality,
+                lineup_countries=lineup_countries,
+            )
 
             # Check if order actually changed
             old_order = [sd['cs_id'] for sd in stream_dicts]
