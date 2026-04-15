@@ -31,13 +31,11 @@ QUALITY_PATTERNS = [
 ]
 
 REGIONAL_PATTERNS = [
-    # East/West are intentionally NOT stripped — they distinguish separate channel feeds
-    # (e.g., "HBO East" and "HBO West" are different channels)
-    r'\s[Pp][Aa][Cc][Ii][Ff][Ii][Cc]',
+    # East/West/Pacific are intentionally NOT stripped — they distinguish
+    # separate channel feeds (e.g., "HBO East", "HBO West", "Sportsnet Pacific").
     r'\s[Cc][Ee][Nn][Tt][Rr][Aa][Ll]',
     r'\s[Mm][Oo][Uu][Nn][Tt][Aa][Ii][Nn]',
     r'\s[Aa][Tt][Ll][Aa][Nn][Tt][Ii][Cc]',
-    r'\s*\([Pp][Aa][Cc][Ii][Ff][Ii][Cc]\)\s*',
     r'\s*\([Cc][Ee][Nn][Tt][Rr][Aa][Ll]\)\s*',
     r'\s*\([Mm][Oo][Uu][Nn][Tt][Aa][Ii][Nn]\)\s*',
     r'\s*\([Aa][Tt][Ll][Aa][Nn][Tt][Ii][Cc]\)\s*',
