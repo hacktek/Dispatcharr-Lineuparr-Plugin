@@ -58,7 +58,8 @@ PROVIDER_PREFIX_PATTERNS = [
 ]
 
 MISC_PATTERNS = [
-    r'\s*\([^)]*\)\s*',
+    # Keep regional feed tags like "(East)" and "(W)" so they can distinguish feeds.
+    r'\s*\((?!(?:east|west|pacific|central|mountain|atlantic|e|w|p|c|m|a)\s*\))[^)]*\)\s*',
 ]
 
 # Country/region codes Lineuparr recognizes in stream-name prefixes.
@@ -94,6 +95,11 @@ _COMPATIBLE_COUNTRIES = {
     "US": {"CA"},
     "CA": {"US"},
 }
+
+_PRESERVED_REGIONAL_PARENS = re.compile(
+    r'^\(\s*(?:east|west|pacific|central|mountain|atlantic|e|w|p|c|m|a)\s*\)$',
+    re.IGNORECASE,
+)
 
 
 def _normalize_country_token(tok):
@@ -251,12 +257,21 @@ class FuzzyMatcher:
 
         # Remove callsigns in parentheses
         if ignore_regional:
-            name = re.sub(r'\([KW][A-Z]{3}(?:-(?:TV|CD|LP|DT|LD))?\)', '', name, flags=re.IGNORECASE)
+            name = re.sub(
+                r'\([KW][A-Z]{3}(?:-(?:TV|CD|LP|DT|LD))?\)',
+                lambda m: m.group(0) if _PRESERVED_REGIONAL_PARENS.match(m.group(0)) else '',
+                name,
+                flags=re.IGNORECASE,
+            )
         else:
             name = re.sub(r'\([KW](?!EST\)|ACIFIC\)|ENTRAL\)|OUNTAIN\)|TLANTIC\))[A-Z]{3}(?:-(?:TV|CD|LP|DT|LD))?\)', '', name, flags=re.IGNORECASE)
 
         if ignore_regional:
-            name = re.sub(r'\([A-Z0-9]+\)', '', name)
+            name = re.sub(
+                r'\([A-Z0-9]+\)',
+                lambda m: m.group(0) if _PRESERVED_REGIONAL_PARENS.match(m.group(0)) else '',
+                name,
+            )
 
         # Remove common suffixes/prefixes
         name = re.sub(r'^The\s+', '', name, flags=re.IGNORECASE)
