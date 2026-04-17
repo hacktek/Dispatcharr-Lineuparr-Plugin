@@ -1,0 +1,650 @@
+# Lineuparr v1.26.1062103
+# Generated: 2026-04-16 15:05:28
+# Lineup: US-CA-UK_CustomProvider-Merged_lineup.json
+# Category Detail: normal
+# Group Prefix: (auto)
+# Match Sensitivity: exact
+# Quality Ordering: True
+# Rate Limiting: none
+# M3U Sources: custom, 3-Crystal, 2-Dino, 1-Mega, 4-Lion (all)
+# EPG Sources: EPG (all)
+# Channel Profile: DirecTV
+#
+channel_name,channel_number,channel_group,matched_epg_name,matched_tvg_id,epg_source,confidence_score,has_program_data,match_method,status
+Al Jazeera English,100,Merged: News,,,,0,No,,No match
+BBC World News,101,Merged: News,[CA] BBC WORLD NEWS,BBCWorldNews.ca,EPG,100,Fallback,exact,Matched (no programs)
+BNN,103,Merged: News,,,,0,No,,No match
+CBC News Network,104,Merged: News,[CA] CBC NEWS NETWORK,CBCNewsNetwork.ca,EPG,100,Yes,exact,Matched
+CNBC,106,Merged: News,[CA] CNBC,CNBC.ca,EPG,100,Fallback,alias,Matched (no programs)
+CNN,107,Merged: News,[CA] CNN,CNN.ca,EPG,100,Fallback,alias,Matched (no programs)
+CTV News Channel,109,Merged: News,[CA] CTV NEWS CHANNEL,CTVNewsChannel.ca,EPG,100,Yes,exact,Matched
+FOX News,110,Merged: News,[CA] FOX NEWS,FoxNewsChannel.ca,EPG,100,Fallback,exact,Matched (no programs)
+HLN,111,Merged: News,[CA] HLN,HLN.ca,EPG,100,Fallback,alias,Matched (no programs)
+MSNBC,112,Merged: News,[CA] MSNBC,MSNBC.ca,EPG,100,Yes,alias,Matched
+The Weather Network,113,Merged: News,[CA] THE WEATHER NETWORK,WeatherNetwork.ca,EPG,100,Fallback,exact,Matched (no programs)
+BBC World News,114,Merged: News,[US] BBC WORLD NEWS,BBCWorldNews.us,EPG,100,Yes,exact,Matched
+Bloomberg Television,115,Merged: News,[US] BLOOMBERG,Bloomberg.us,EPG,100,Yes,alias,Matched
+C-SPAN,116,Merged: News,,,,0,No,,No match
+C-SPAN2,117,Merged: News,[US] C-SPAN 2,CSPAN2.us,EPG,100,Yes,alias,Matched
+CNBC,119,Merged: News,[US] CNBC,CNBC.us,EPG,100,Yes,alias,Matched
+CNN,120,Merged: News,[US] CNN,CNN.us,EPG,100,Yes,alias,Matched
+FOX Business Network,121,Merged: News,[US] FOX BUSINESS,FoxBusiness.us,EPG,100,Yes,alias,Matched
+FOX News Channel,122,Merged: News,[US] FOX NEWS,FoxNewsChannel.us,EPG,100,Yes,alias,Matched
+HLN,123,Merged: News,[US] HLN,HLN.us,EPG,100,Yes,alias,Matched
+MSNBC,124,Merged: News,,,,0,No,,No match
+NASA,125,Merged: News,,,,0,No,,No match
+Newsmax,126,Merged: News,[US] NEWSMAX,NewsmaxTV.us,EPG,100,Yes,alias,Matched
+Weather Channel,128,Merged: News,[US] THE WEATHER CHANNEL,TheWeatherChannel.us,EPG,100,Yes,alias,Matched
+ABC News Live,130,Merged: News,[US] ABC NEWS LIVE,ABCNewsLive.us,EPG,100,Yes,alias,Matched
+ABC Localish,131,Merged: News,,,,0,No,,No match
+AccuWeather,132,Merged: News,,,,0,No,,No match
+BBC News,133,Merged: News,[US] BBC WORLD NEWS,BBCWorldNews.us,EPG,100,Yes,alias,Matched
+Bloomberg TV,134,Merged: News,[US] BLOOMBERG,Bloomberg.us,EPG,100,Yes,alias,Matched
+Cheddar News,135,Merged: News,,,,0,No,,No match
+CNN En Español,136,Merged: News,,,,0,No,,No match
+CNNi,137,Merged: News,[US] CNN INTERNATIONAL,CNNinternational.us,EPG,100,Yes,alias,Matched
+CNBC World,138,Merged: News,[US] CNBC WORLD,CNBCWorld.us,EPG,100,Yes,alias,Matched
+FOX Weather,139,Merged: News,[US] FOX WEATHER,FOXWeather.us,EPG,100,Yes,alias,Matched
+MS Now,140,Merged: News,,,,0,No,,No match
+NewsNation,142,Merged: News,[US] NEWSNATION,NewsNation.us,EPG,100,Yes,alias,Matched
+The First,144,Merged: News,[US] THE FIRST,TheFirst.us,EPG,100,Yes,exact,Matched
+Bloomberg,146,Merged: News,[US] BLOOMBERG,Bloomberg.us,EPG,100,Yes,exact,Matched
+CNN International,147,Merged: News,[US] CNN INTERNATIONAL,CNNinternational.us,EPG,100,Yes,exact,Matched
+Fox News,148,Merged: News,[US] FOX NEWS,FoxNewsChannel.us,EPG,100,Yes,exact,Matched
+The Weather Channel,151,Merged: News,[US] THE WEATHER CHANNEL,TheWeatherChannel.us,EPG,100,Yes,exact,Matched
+Al Jazeera English,152,Merged: News,,,,0,No,,No match
+Arise News,154,Merged: News,[UK] ARISE NEWS,AriseNews.uk,EPG,100,Yes,exact,Matched
+BBC NEWS,155,Merged: News,[UK] BBC NEWS FHD,BBCNewsChannel.uk,EPG,100,Fallback,exact,Matched (no programs)
+BBC Parliament,156,Merged: News,[UK] BBC PARLIAMENT,BBCParliament.uk,EPG,100,Yes,exact,Matched
+Bloomberg,157,Merged: News,[UK] BLOOMBERG,Bloomberg.uk,EPG,100,Fallback,exact,Matched (no programs)
+CNBC,159,Merged: News,[UK] CNBC,CNBC.uk,EPG,100,Fallback,alias,Matched (no programs)
+CNN,160,Merged: News,[UK] CNN,CNN.uk,EPG,100,Fallback,alias,Matched (no programs)
+Euronews,162,Merged: News,[UK] EURO NEWS,Euronews.uk,EPG,100,Fallback,exact,Matched (no programs)
+FRANCE 24,163,Merged: News,[UK] FRANCE 24,France24.uk,EPG,100,Yes,exact,Matched
+GB News,164,Merged: News,[UK] GB NEWS,GBNews.uk,EPG,100,Yes,exact,Matched
+Sky News,169,Merged: News,[UK] SKY NEWS,SkyNews.uk,EPG,100,Yes,exact,Matched
+TRT World,171,Merged: News,[UK] TRT WORLD,TRTWorld.uk,EPG,100,Yes,exact,Matched
+beIN SPORTS,200,Merged: Sports,,,,0,No,,No match
+Fight Network,202,Merged: Sports,[CA] THE FIGHT NETWORK,TheFightNetwork.ca,EPG,100,Fallback,exact,Matched (no programs)
+Golf Channel,204,Merged: Sports,[CA] GOLF CHANNEL,GolfChannel.ca,EPG,100,Fallback,alias,Matched (no programs)
+NFL Network,208,Merged: Sports,[CA] NFL NETWORK,NFLNetwork.ca,EPG,100,Fallback,alias,Matched (no programs)
+NFL RedZone,209,Merged: Sports,,,,0,No,,No match
+Sportsnet 360,213,Merged: Sports,[CA] SPORTSNET 360,Sportsnet360.ca,EPG,100,Yes,alias,Matched
+Sportsnet ONE,214,Merged: Sports,[CA] SPORTSNET ONE,SportsnetOne.ca,EPG,100,Yes,alias,Matched
+Sportsnet World,215,Merged: Sports,[CA] SPORTSNET WORLD,SportsnetWorld.ca,EPG,100,Yes,alias,Matched
+TSN1,216,Merged: Sports,[CA] TSN 1,TSN1.ca,EPG,100,Yes,exact,Matched
+TSN2,217,Merged: Sports,[CA] TSN 2,TSN2.ca,EPG,100,Yes,exact,Matched
+TSN3,218,Merged: Sports,[CA] TSN 3,TSN3.ca,EPG,100,Yes,exact,Matched
+TSN4,219,Merged: Sports,[CA] TSN 4,TSN4.ca,EPG,100,Yes,exact,Matched
+TSN5,220,Merged: Sports,[CA] TSN 5,TSN5.ca,EPG,100,Yes,exact,Matched
+WWE Network,221,Merged: Sports,,,,0,No,,No match
+beIN SPORT,222,Merged: Sports,[US] BEIN SPORTS,beINSports.us,EPG,95,Yes,substring,Matched
+beIN SPORTS en Español,223,Merged: Sports,,,,0,No,,No match
+CBS Sports Network,225,Merged: Sports,[US] CBS SPORTS NETWORK,CBSSportsNetwork.us,EPG,100,Yes,alias,Matched
+ESPN,226,Merged: Sports,,,,0,No,,No match
+ESPN2,227,Merged: Sports,[US] ESPN 2,ESPN2.us,EPG,100,Yes,alias,Matched
+ESPNEWS,228,Merged: Sports,[US] ESPN NEWS,ESPNEWS.us,EPG,100,Fallback,alias,Matched (no programs)
+ESPNU,229,Merged: Sports,[US] ESPN U,ESPNU.us,EPG,100,Yes,alias,Matched
+Fox Sports 1,230,Merged: Sports,[US] FOX SPORTS 1,FoxSports1.us,EPG,100,Yes,alias,Matched
+Fox Sports 2,231,Merged: Sports,[US] FOX SPORTS 2,FoxSports2.us,EPG,100,Yes,alias,Matched
+Golf Channel,232,Merged: Sports,[US] GOLF CHANNEL,GolfChannel.us,EPG,100,Yes,alias,Matched
+MLB Network,233,Merged: Sports,[US] MLB NETWORK,MLBNetwork.us,EPG,100,Yes,alias,Matched
+MLB Strike Zone,234,Merged: Sports,,,,0,No,,No match
+NBA TV,235,Merged: Sports,[US] NBA TV,NBAtv.us,EPG,100,Yes,alias,Matched
+NBCSN,236,Merged: Sports,[US] NBCSN,NBCSN.us,EPG,100,Yes,exact,Matched
+NFL Network,237,Merged: Sports,[US] NFL NETWORK,NFLNetwork.us,EPG,100,Yes,alias,Matched
+NFL RedZone,238,Merged: Sports,[US] NFL REDZONE,NFLRedZone.us,EPG,100,Yes,exact,Matched
+NHL Network,239,Merged: Sports,[US] NHL NETWORK,NHLNetwork.us,EPG,100,Yes,alias,Matched
+Olympic Channel,240,Merged: Sports,,,,0,No,,No match
+Outside TV,241,Merged: Sports,[US] OUTSIDE TV,OutsideTelevision.us,EPG,100,Yes,exact,Matched
+Pac-12 Network,242,Merged: Sports,,,,0,No,,No match
+SEC Network,243,Merged: Sports,[US] SEC NETWORK,SECNetwork.us,EPG,100,Yes,alias,Matched
+Tennis Channel,244,Merged: Sports,[US] TENNIS CHANNEL,TennisChannel.us,EPG,100,Yes,exact,Matched
+TVG2,246,Merged: Sports,,,,0,No,,No match
+ACC Digital Network,247,Merged: Sports,[US] ACC DIGITAL NETWORK,ACCDigitalNetwork.us,EPG,100,Yes,exact,Matched
+ACC Network,248,Merged: Sports,[US] ACC NETWORK,ACCNetwork.us,EPG,100,Yes,alias,Matched
+beIN SPORTS XTRA,250,Merged: Sports,[US] beIN SPORTS XTRA,beINSportsXtra.us,EPG,100,Yes,exact,Matched
+Big Ten Network,251,Merged: Sports,[US] BTN,BigTen.us,EPG,100,Fallback,alias,Matched (no programs)
+Billiard TV,253,Merged: Sports,[US] Billiard TV,BilliardTV.us,EPG,100,Yes,exact,Matched
+ESPN8: The Ocho,258,Merged: Sports,,,,0,No,,No match
+FanDuel TV,259,Merged: Sports,[US] TVG NETWORK,FanDuelTV.us,EPG,100,Fallback,alias,Matched (no programs)
+Fight Network,260,Merged: Sports,[US] FIGHT NETWORK,FightNetwork.us,EPG,100,Yes,exact,Matched
+FOX Sports,261,Merged: Sports,,,,0,No,,No match
+FS1,262,Merged: Sports,[US] FOX SPORTS 1,FoxSports1.us,EPG,100,Yes,alias,Matched
+FS2,263,Merged: Sports,[US] FOX SPORTS 2,FoxSports2.us,EPG,100,Yes,alias,Matched
+GolfPass,265,Merged: Sports,[US] GOLFPASS,GolfPass.us,EPG,100,Yes,exact,Matched
+Pickleball TV,270,Merged: Sports,[US] PICKLEBALL TV,PickleballTV.us,EPG,100,Yes,exact,Matched
+Players TV,271,Merged: Sports,,,,0,No,,No match
+PokerGO,272,Merged: Sports,[US] POKERGO,PokerGO.us,EPG,100,Yes,exact,Matched
+Red Bull TV,275,Merged: Sports,[US] RED BULL TV,RedbullTV.us,EPG,100,Yes,exact,Matched
+Sportsman Channel,277,Merged: Sports,[US] SPORTSMAN CHANNEL,SportsmanChannel.us,EPG,100,Yes,exact,Matched
+SportsGrid,279,Merged: Sports,[US] SPORTS GRID,SportsGrid.us,EPG,100,Yes,exact,Matched
+Tennis Channel 2,283,Merged: Sports,,,,0,No,,No match
+TUDN,286,Merged: Sports,[US] TUDN,TUDN.us,EPG,100,Yes,alias,Matched
+Willow Sports,287,Merged: Sports,,,,0,No,,No match
+beIN Sports,290,Merged: Sports,[US] BEIN SPORTS,beINSports.us,EPG,100,Yes,exact,Matched
+Eleven Sports,291,Merged: Sports,,,,0,No,,No match
+NHL Center Ice,295,Merged: Sports,,,,0,No,,No match
+Willow Cricket,296,Merged: Sports,[US] WILLOW CRICKET HD,Willow.us,EPG,100,Yes,exact,Matched
+MUTV,299,Merged: Sports,[UK] MUTV,MUTV.uk6,EPG,100,Yes,exact,Matched
+Premier Sports 1,300,Merged: Sports,[UK] PREMIER SPORTS 1,PremierSports1.ie2,EPG,100,Fallback,exact,Matched (no programs)
+Premier Sports 2,301,Merged: Sports,[UK] PREMIER SPORTS 2,PremierSports2.ie2,EPG,100,Fallback,exact,Matched (no programs)
+Sky Sports +,302,Merged: Sports,,,,0,No,,No match
+Sky Sports Action,303,Merged: Sports,[UK] SKY SPORTS ARENA,SkySportsPlus.uk,EPG,100,Fallback,alias,Matched (no programs)
+Sky Sports Box Office HD,304,Merged: Sports,[UK] SKY SPORTS BOX OFFICE,SkySportsBoxOffice.uk,EPG,100,Yes,alias,Matched
+Sky Sports Cricket,305,Merged: Sports,[UK] SKY SPORTS CRICKET,SkySportsCricket.uk,EPG,100,Yes,exact,Matched
+Sky Sports F1,306,Merged: Sports,[UK] SKY SPORTS F1,SkySportsF1.uk,EPG,100,Yes,exact,Matched
+Sky Sports Football,307,Merged: Sports,[UK] SKY SPORTS FOOTBALL,SkySportsFootball.uk,EPG,100,Yes,alias,Matched
+Sky Sports Golf,308,Merged: Sports,[UK] SKY SPORTS GOLF,SkySportsGolf.uk,EPG,100,Yes,exact,Matched
+Sky Sports Main Event,309,Merged: Sports,[UK] SKY SPORTS MAIN EVENT,SkySportsMainEvent.uk,EPG,100,Yes,alias,Matched
+Sky Sports Mix,310,Merged: Sports,[UK] SKY SPORTS MIX,SkySportsMix.uk,EPG,100,Yes,exact,Matched
+Sky Sports News,311,Merged: Sports,[UK] SKY SPORTS NEWS,SkySportsNews.uk,EPG,100,Yes,alias,Matched
+Sky Sports Premier League,312,Merged: Sports,[UK] SKY SPORTS PREMIER LEAGUE,SkySportsPremierLeague.uk,EPG,100,Yes,exact,Matched
+Sky Sports Tennis,313,Merged: Sports,[UK] SKY SPORTS TENNIS,SkySportsTennis.uk,EPG,100,Yes,exact,Matched
+TNT Sports 1,314,Merged: Sports,,,,0,No,,No match
+TNT Sports 2,315,Merged: Sports,,,,0,No,,No match
+TNT Sports 3,316,Merged: Sports,,,,0,No,,No match
+TNT Sports 4,317,Merged: Sports,,,,0,No,,No match
+TNT Sports Box Office,318,Merged: Sports,[UK] TNT SPORTS BOX OFFICE,TNTSportsBoxOffice.uk,EPG,100,Yes,exact,Matched
+TNT Sports Ultimate (UHD),319,Merged: Sports,[UK] TNT SPORT ULTIMATE,TNTSportsUltimate.uk,EPG,97,Yes,exact,Matched
+Sportsnet East,400,Merged: Regional Sports,[CA] SPORTSNET EAST,SportsnetEast.ca,EPG,100,Yes,alias,Matched
+Sportsnet Ontario,403,Merged: Regional Sports,[CA] SPORTSNET ONTARIO,SportsnetOntario.ca,EPG,100,Yes,alias,Matched
+Sportsnet Pacific,401,Merged: Regional Sports,[CA] SPORTSNET PACIFIC,SportsnetPacific.ca,EPG,100,Yes,alias,Matched
+Sportsnet West,402,Merged: Regional Sports,[CA] SPORTSNET WEST,SportsnetWest.ca,EPG,100,Yes,alias,Matched
+Big 10 Network,407,Merged: Regional Sports,[US] BTN,BigTen.us,EPG,100,Fallback,alias,Matched (no programs)
+Longhorn Network,408,Merged: Regional Sports,,,,0,No,,No match
+Altitude Sports,409,Merged: Regional Sports,[US] ALTITUDE SPORTS,AltitudeSports.us,EPG,100,Yes,exact,Matched
+Chicago Sports Network,410,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Cincinnati,411,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Detroit,412,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Florida,413,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Midwest,414,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports North,415,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Ohio,416,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Oklahoma,417,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports SoCal,418,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports South,419,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Southeast,420,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Southwest,421,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Sun,422,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports West,423,Merged: Regional Sports,,,,0,No,,No match
+FanDuel Sports Wisconsin,424,Merged: Regional Sports,,,,0,No,,No match
+Marquee Sports Network,425,Merged: Regional Sports,[US] MARQUEE SPORTS NETWORK,MarqueeSports.us,EPG,100,Yes,exact,Matched
+MASN,426,Merged: Regional Sports,[US] MASN,MASN.us,EPG,100,Yes,exact,Matched
+MSG,428,Merged: Regional Sports,[US] MSG,MSGZone1.us,EPG,100,Yes,exact,Matched
+NBA New Orleans Pelicans,430,Merged: Regional Sports,,,,0,No,,No match
+NBC Sports Bay Area,431,Merged: Regional Sports,[US] NBC SPORTS BAY AREA,NBCSportsBayArea.us,EPG,100,Yes,exact,Matched
+NBC Sports Boston,432,Merged: Regional Sports,[US] NBC SPORTS BOSTON,NBCSportsBoston.us,EPG,100,Yes,exact,Matched
+NBC Sports California,433,Merged: Regional Sports,[US] NBC SPORTS CALIFORNIA,NBCSportsCalifornia.us,EPG,100,Yes,exact,Matched
+NESN,434,Merged: Regional Sports,[US] NESN,NESN.us,EPG,100,Yes,exact,Matched
+NHL Tampa Bay Lightning,436,Merged: Regional Sports,,,,0,No,,No match
+SNY,437,Merged: Regional Sports,[US] SNY,SNY.us,EPG,100,Yes,exact,Matched
+Space City Home Network,438,Merged: Regional Sports,[US] SPACE CITY HOME NETWORK,SpaceCityHomeNetwork.us,EPG,100,Yes,exact,Matched
+Spectrum SportsNet,439,Merged: Regional Sports,[US] SPECTRUM SPORTSNET,SpectrumSportsNetLALakers.us,EPG,100,Yes,exact,Matched
+YES Network,442,Merged: Regional Sports,[US] YES NETWORK,YesNetwork.us,EPG,100,Yes,exact,Matched
+Sky Sports Racing,446,Merged: Regional Sports,[UK] SKY SPORTS RACING,SkySportsRacing.uk,EPG,100,Yes,exact,Matched
+Action,500,Merged: Movies,,,,0,No,,No match
+FX,502,Merged: Movies,[CA] FX,FX.ca,EPG,100,Fallback,alias,Matched (no programs)
+FXX,503,Merged: Movies,[CA] FXX,FXX.ca,EPG,100,Fallback,alias,Matched (no programs)
+IFC,509,Merged: Movies,,,,0,No,,No match
+MovieTime,510,Merged: Movies,[CA] MOVIE TIME,MovieTime.ca,EPG,100,Fallback,exact,Matched (no programs)
+Rewind,511,Merged: Movies,[CA] REWIND,rewind.ca,EPG,100,Fallback,exact,Matched (no programs)
+Silver Screen Classics,512,Merged: Movies,[CA] SILVER SCREEN CLASSICS,SilverScreenClassics.ca,EPG,100,Yes,exact,Matched
+Sundance Channel,513,Merged: Movies,,,,0,No,,No match
+TMN 1,518,Merged: Movies,,,,0,No,,No match
+Turner Classic Movies,520,Merged: Movies,,,,0,No,,No match
+EPIX Drive-In,522,Merged: Movies,[US] MGM+ Drive-In,MGM+DriveIn.us,EPG,100,Yes,alias,Matched
+EPIX 1,523,Merged: Movies,[US] EPIX,MGM+.us,EPG,100,Yes,alias,Matched
+EPIX 2,524,Merged: Movies,,,,0,No,,No match
+EPIX Hits,525,Merged: Movies,[US] MGM+ Hits,MGM+Hits.us,EPG,100,Yes,alias,Matched
+FXM,527,Merged: Movies,[US] FXM,FXMovies.us,EPG,100,Yes,exact,Matched
+Hallmark Movies & Mysteries,528,Merged: Movies,[US] HALLMARK MOVIES & MYSTERIES,HallmarkMystery.us,EPG,100,Yes,exact,Matched
+HDNet Movies,529,Merged: Movies,,,,0,No,,No match
+IndiePlex,530,Merged: Movies,[US] INDIE PLEX,IndiePlex.us,EPG,100,Fallback,exact,Matched (no programs)
+MGM,531,Merged: Movies,,,,0,No,,No match
+MoviePlex,532,Merged: Movies,[US] MOVIE PLEX,MoviePlex.us,EPG,100,Fallback,exact,Matched (no programs)
+PixL,533,Merged: Movies,[US] PIXL,PixL.us,EPG,100,Yes,exact,Matched
+RetroPlex,534,Merged: Movies,[US] RETRO PLEX,RetroPlex.us,EPG,100,Yes,exact,Matched
+Showtime (E),535,Merged: Movies,,,,0,No,,No match
+Showtime (W),536,Merged: Movies,,,,0,No,,No match
+Showtime 2,537,Merged: Movies,[US] SHOWTIME 2 EAST,Showtime2.us,EPG,100,Yes,alias,Matched
+Showtime Showcase,538,Merged: Movies,,,,0,No,,No match
+Showtime Extreme,539,Merged: Movies,,,,0,No,,No match
+Sony Movie Channel,541,Merged: Movies,[US] SONY MOVIES,SonyMovieChannel.us,EPG,95,Yes,substring,Matched
+STARZ Cinema,544,Merged: Movies,[US] STARZ CINEMA,StarzCinema.us,EPG,100,Yes,exact,Matched
+STARZ Comedy,545,Merged: Movies,,,,0,No,,No match
+STARZ Edge,546,Merged: Movies,,,,0,No,,No match
+STARZ Encore Action,549,Merged: Movies,,,,0,No,,No match
+STARZ Encore Black,550,Merged: Movies,[US] STARZ ENCORE BLACK,StarzEncoreBlack.us,EPG,100,Yes,exact,Matched
+STARZ Encore Classic,551,Merged: Movies,[US] STARZ ENCORE CLASSIC,StarzEncoreClassic.us,EPG,100,Yes,exact,Matched
+STARZ Encore Family,552,Merged: Movies,[US] STARZ ENCORE FAMILY,StarzEncoreFamily.us,EPG,100,Yes,exact,Matched
+STARZ Encore Suspense,553,Merged: Movies,,,,0,No,,No match
+STARZ Encore Westerns,554,Merged: Movies,,,,0,No,,No match
+STARZ In Black,555,Merged: Movies,[US] STARZ IN BLACK,StarzInBlack.us,EPG,100,Yes,exact,Matched
+SundanceTV,557,Merged: Movies,[US] SUNDANCE,SundanceTV.us,EPG,100,Yes,alias,Matched
+The Movie Channel (E),558,Merged: Movies,[US] THE MOVIE CHANNEL,TheMovieChannel.us,EPG,100,Yes,alias,Matched
+The Movie Channel Xtra,560,Merged: Movies,[US] THE MOVIE CHANNEL EXTRA,TheMovieChannelExtra.us,EPG,100,Yes,alias,Matched
+The Movie Channel Xtra (E),561,Merged: Movies,[US] THE MOVIE CHANNEL EXTRA,TheMovieChannelExtra.us,EPG,97,Yes,alias,Matched
+Turner Classic Movies,562,Merged: Movies,,,,0,No,,No match
+Cinemax,563,Merged: Movies,,,,0,No,,No match
+Cinemax East,566,Merged: Movies,,,,0,No,,No match
+HBO Comedy East HD,570,Merged: Movies,[US] HBO COMEDY EAST,HBOComedy.us,EPG,100,Yes,alias,Matched
+HBO East,572,Merged: Movies,[US] HBO EAST,HBO.us,EPG,100,Yes,alias,Matched
+HBO Latino,575,Merged: Movies,,,,0,No,,No match
+Hallmark Mystery,576,Merged: Movies,[US] HALLMARK MOVIES & MYSTERIES,HallmarkMystery.us,EPG,100,Yes,alias,Matched
+Movie Favorites by Lifetime,578,Merged: Movies,,,,0,No,,No match
+Paramount+ with SHOWTIME EAST,581,Merged: Movies,,,,0,No,,No match
+SHO x BET,582,Merged: Movies,,,,0,No,,No match
+SHOWTIME 2 East,583,Merged: Movies,[US] SHOWTIME 2 EAST,Showtime2.us,EPG,100,Yes,alias,Matched
+SHOWTIME Family Zone,584,Merged: Movies,[US] SHOWTIME FAMILY ZONE,ShowtimeFamilyzone.us,EPG,100,Yes,exact,Matched
+SHOWTIME Next,585,Merged: Movies,,,,0,No,,No match
+STARZ,587,Merged: Movies,,,,0,No,,No match
+STARZ Cinema East HD,588,Merged: Movies,[US] STARZ CINEMA,StarzCinema.us,EPG,100,Yes,exact,Matched
+STARZ Comedy East HD,589,Merged: Movies,[US] STARZ COMEDY EAST,StarzComedy.us,EPG,100,Yes,alias,Matched
+STARZ Edge East HD,590,Merged: Movies,[US] STARZ EDGE EAST,StarzEdge.us,EPG,100,Yes,alias,Matched
+STARZ ENCORE East,591,Merged: Movies,[US] STARZ ENCORE EAST,StarzEncore.us,EPG,100,Yes,alias,Matched
+STARZ ENCORE West,592,Merged: Movies,[US] STARZ ENCORE WEST,StarzEncorePacific.us,EPG,100,Fallback,alias,Matched (no programs)
+STARZ In Black East HD,593,Merged: Movies,[US] STARZ IN BLACK,StarzInBlack.us,EPG,100,Yes,exact,Matched
+TCM,594,Merged: Movies,[US] TCM,TCMPacific.us,EPG,100,Yes,alias,Matched
+TCM East,595,Merged: Movies,[US] TCM,TCMPacific.us,EPG,100,Yes,alias,Matched
+TCM West,596,Merged: Movies,[US] TCM,TCMPacific.us,EPG,100,Yes,alias,Matched
+Action Max,598,Merged: Movies,,,,0,No,,No match
+AMC,599,Merged: Movies,,,,0,No,,No match
+Hallmark Channel,601,Merged: Movies,[US] HALLMARK CHANNEL,HallmarkChannel.us,EPG,100,Yes,alias,Matched
+HBO,602,Merged: Movies,,,,0,No,,No match
+HBO 2,603,Merged: Movies,,,,0,No,,No match
+HBO Comedy,604,Merged: Movies,,,,0,No,,No match
+HBO Family,605,Merged: Movies,,,,0,No,,No match
+HBO Signature,606,Merged: Movies,,,,0,No,,No match
+HBO Zone,607,Merged: Movies,,,,0,No,,No match
+IFC,608,Merged: Movies,[US] IFC,IFC.us,EPG,100,Yes,exact,Matched
+MGM+ Hits,609,Merged: Movies,[US] MGM+ Hits,MGM+Hits.us,EPG,100,Yes,exact,Matched
+Outer Max,612,Merged: Movies,,,,0,No,,No match
+Starz Encore,614,Merged: Movies,,,,0,No,,No match
+The Movie Channel,615,Merged: Movies,[US] THE MOVIE CHANNEL,TheMovieChannel.us,EPG,100,Yes,exact,Matched
+GREAT! action,618,Merged: Movies,[UK] GREAT ACTION,GREAT!action.uk,EPG,100,Yes,fuzzy (100),Matched
+GREAT! Romance,620,Merged: Movies,[UK] GREAT ROMANCE,GREAT!romance.uk,EPG,100,Yes,fuzzy (100),Matched
+LEGEND XTRA,621,Merged: Movies,[UK] LEGEND XTRA,LegendXtra.uk,EPG,100,Yes,exact,Matched
+Sky Cinema Premiere,623,Merged: Movies,[UK] SKY CINEMA PREMIERE,SkyCinemaPremiere.uk,EPG,100,Yes,exact,Matched
+Sky Cinema Hits,625,Merged: Movies,[UK] SKY CINEMA HITS,SkyCinemaHits.uk,EPG,100,Yes,exact,Matched
+Sky Cinema Family,626,Merged: Movies,[UK] SKY CINEMA FAMILY,SkyCinemaFamily.uk,EPG,100,Yes,exact,Matched
+Sky Cinema Action,627,Merged: Movies,[UK] SKY CINEMA ACTION,SkyCinemaAction.uk,EPG,100,Yes,alias,Matched
+Sky Cinema Greats,628,Merged: Movies,[UK] SKY CINEMA GREATS,SkyCinemaGreats.uk,EPG,100,Yes,exact,Matched
+Sky Cinema Comedy,629,Merged: Movies,[UK] SKY CINEMA COMEDY,SkyCinemaComedy.uk,EPG,100,Yes,exact,Matched
+Sky Cinema Thriller,630,Merged: Movies,[UK] SKY CINEMA THRILLER,SkyCinemaThriller.uk,EPG,100,Yes,exact,Matched
+Sky Cinema Drama,631,Merged: Movies,[UK] SKY CINEMA DRAMA,SkyCinemaDrama.uk,EPG,100,Yes,exact,Matched
+Sky Cinema SciFi/Horror,632,Merged: Movies,[UK] SKY CINEMA SCIFI/HORROR,SkyCinemaSci-fiAndHorror.uk,EPG,100,Yes,exact,Matched
+Sky Cinema Animation,633,Merged: Movies,[UK] SKY CINEMA ANIMATION,SkyCinemaAnimation.uk,EPG,100,Yes,alias,Matched
+Talking Pictures,634,Merged: Movies,[UK] TALKING PICTURES TV,TalkingPicturesTV.uk,EPG,100,Yes,exact,Matched
+BabyTV,700,Merged: Kids,,,,0,No,,No match
+Cartoon Network,702,Merged: Kids,[CA] CARTOON NETWORK,CartoonNetwork.ca,EPG,100,Fallback,alias,Matched (no programs)
+Disney Channel,704,Merged: Kids,[CA] DISNEY CHANNEL,DisneyChannel.ca,EPG,100,Fallback,exact,Matched (no programs)
+Disney Junior,705,Merged: Kids,,,,0,No,,No match
+Disney XD,706,Merged: Kids,,,,0,No,,No match
+Family Channel,707,Merged: Kids,,,,0,No,,No match
+Family Jr,708,Merged: Kids,,,,0,No,,No match
+Nickelodeon,709,Merged: Kids,,,,0,No,,No match
+Teletoon,710,Merged: Kids,[CA] TELETOON,TeletoonFrancais.ca,EPG,100,Yes,exact,Matched
+Treehouse,711,Merged: Kids,[CA] TREEHOUSE,Treehouse.ca,EPG,100,Yes,exact,Matched
+YTV,713,Merged: Kids,,,,0,No,,No match
+Animal Planet,714,Merged: Kids,[US] ANIMAL PLANET,AnimalPlanet.us,EPG,100,Yes,alias,Matched
+Baby TV,715,Merged: Kids,[US] BABYTV,BabyTV.us,EPG,100,Yes,alias,Matched
+BabyFirstTV,716,Merged: Kids,[US] BABY FIRST,BabyFirst.us,EPG,100,Yes,alias,Matched
+Boomerang,717,Merged: Kids,[US] BOOMERANG,Boomerang.us,EPG,100,Yes,exact,Matched
+Disney Junior,722,Merged: Kids,,,,0,No,,No match
+Disney XD,723,Merged: Kids,,,,0,No,,No match
+Nick Jr.,724,Merged: Kids,,,,0,No,,No match
+Nick Music,725,Merged: Kids,[US] NICK MUSIC,NickMusic.us,EPG,100,Yes,exact,Matched
+Nick/Nick at Nite (E),726,Merged: Kids,[US] NICKELODEON EAST,Nickelodeon.us,EPG,100,Yes,alias,Matched
+Nick/Nick at Nite (W),727,Merged: Kids,[US] NICKELODEON WEST,NickelodeonPacific.us,EPG,100,Fallback,alias,Matched (no programs)
+Nicktoons,728,Merged: Kids,,,,0,No,,No match
+TeenNick,729,Merged: Kids,,,,0,No,,No match
+BabyFirst HD,730,Merged: Kids,[US] BABY FIRST,BabyFirst.us,EPG,100,Yes,exact,Matched
+Cartoon Network East,731,Merged: Kids,[US] CARTOON NETWORK EAST,CartoonNetwork.us,EPG,100,Yes,alias,Matched
+Disney Channel East,732,Merged: Kids,,,,0,No,,No match
+MeTV Toons,735,Merged: Kids,[US] METV TOONS,MeTvToons.us,EPG,100,Yes,exact,Matched
+Nickelodeon East,736,Merged: Kids,[US] NICKELODEON EAST,Nickelodeon.us,EPG,100,Yes,alias,Matched
+PBS Kids,737,Merged: Kids,,,,0,No,,No match
+Cartoon Network,739,Merged: Kids,,,,0,No,,No match
+Discovery Family Channel,740,Merged: Kids,[US] DISCOVERY FAMILY,DiscoveryFamilyChannel.us,EPG,100,Yes,exact,Matched
+Disney Channel,741,Merged: Kids,,,,0,No,,No match
+Nickelodeon,743,Merged: Kids,,,,0,No,,No match
+Baby TV,744,Merged: Kids,[UK] BABY TV,BabyTV.uk,EPG,100,Fallback,alias,Matched (no programs)
+Boomerang,745,Merged: Kids,[UK] BOOMERANG,Boomerang.uk,EPG,100,Fallback,exact,Matched (no programs)
+Cartoonito,746,Merged: Kids,[UK] CARTOONITO,Cartoonito.uk,EPG,100,Yes,exact,Matched
+Cartoon Network,747,Merged: Kids,[UK] CARTOON NETWORK,CartoonNetwork.uk,EPG,100,Fallback,alias,Matched (no programs)
+CBBC,748,Merged: Kids,,,,0,No,,No match
+CBeebies,749,Merged: Kids,,,,0,No,,No match
+Disney Jr HD,751,Merged: Kids,[UK] DISNEY JUNIOR,DisneyJr.uk,EPG,100,Fallback,alias,Matched (no programs)
+Nickelodeon,752,Merged: Kids,[UK] NICKELODEON,Nickelodeon.uk,EPG,100,Fallback,exact,Matched (no programs)
+Nick Jr.,753,Merged: Kids,,,,0,No,,No match
+Nick Jr. Too,754,Merged: Kids,[UK] NICK JR. TOO,NickJrToo.uk,EPG,100,Yes,exact,Matched
+Nicktoons,755,Merged: Kids,[UK] NICKTOONS,Nicktoons.uk,EPG,100,Fallback,exact,Matched (no programs)
+Sky Kids,757,Merged: Kids,[UK] SKY KIDS,SkyKids.uk,EPG,100,Yes,exact,Matched
+A&E,800,Merged: Entertainment,[CA] A&E,AandE.ca,EPG,100,Fallback,alias,Matched (no programs)
+ABC Spark,801,Merged: Entertainment,,,,0,No,,No match
+AMC,802,Merged: Entertainment,[CA] AMC,AMC.ca,EPG,100,Fallback,alias,Matched (no programs)
+BBC Canada,803,Merged: Entertainment,,,,0,No,,No match
+Bravo,804,Merged: Entertainment,[CA] BRAVO,Bravo.ca,EPG,100,Fallback,alias,Matched (no programs)
+DejaView,806,Merged: Entertainment,[CA] DEJAVIEW,DejaView.ca,EPG,100,Yes,exact,Matched
+E!,807,Merged: Entertainment,,,,0,No,,No match
+Game Show Network,810,Merged: Entertainment,[CA] GAME SHOW NETWORK,GameShowNetwork.ca,EPG,100,Fallback,exact,Matched (no programs)
+Lifetime,811,Merged: Entertainment,[CA] LIFETIME,Lifetime.ca,EPG,100,Fallback,alias,Matched (no programs)
+One,812,Merged: Entertainment,[CA] ONE,EuroNews.ca,EPG,100,Fallback,exact,Matched (no programs)
+OUTtv,813,Merged: Entertainment,[CA] OUTTV,OUTtv.ca,EPG,100,Yes,exact,Matched
+OWN,814,Merged: Entertainment,[CA] OWN,KelownaRockets.whl,EPG,100,Fallback,alias,Matched (no programs)
+Showcase,815,Merged: Entertainment,[CA] SHOWCASE,Showcase.ca,EPG,100,Fallback,exact,Matched (no programs)
+Space,816,Merged: Entertainment,[CA] SPACE,CTVSciFiChannel.ca,EPG,100,Yes,exact,Matched
+VICELAND,818,Merged: Entertainment,,,,0,No,,No match
+A&E,820,Merged: Entertainment,[US] A&E,AandENetwork.us,EPG,100,Yes,alias,Matched
+AMC,821,Merged: Entertainment,,,,0,No,,No match
+AXS TV,822,Merged: Entertainment,[US] AXS TV,AXSTV.us,EPG,100,Yes,exact,Matched
+BBC America,823,Merged: Entertainment,,,,0,No,,No match
+BET,824,Merged: Entertainment,,,,0,No,,No match
+BET Gospel,825,Merged: Entertainment,[US] BET GOSPEL,BETGospel.us,EPG,100,Yes,exact,Matched
+BET Her,826,Merged: Entertainment,,,,0,No,,No match
+BET Jams,827,Merged: Entertainment,[US] BET JAMS,BETJams.us,EPG,100,Yes,exact,Matched
+BET Soul,828,Merged: Entertainment,[US] BET SOUL,BETSOUL.us,EPG,100,Yes,exact,Matched
+Bravo,829,Merged: Entertainment,,,,0,No,,No match
+Comet,830,Merged: Entertainment,,,,0,No,,No match
+E! Entertainment Television,831,Merged: Entertainment,,,,0,No,,No match
+FETV,832,Merged: Entertainment,[US] FETV,FETV.us,EPG,100,Yes,alias,Matched
+Freeform,833,Merged: Entertainment,,,,0,No,,No match
+FX,834,Merged: Entertainment,[US] FX,FX.us,EPG,100,Fallback,alias,Matched (no programs)
+FXX,835,Merged: Entertainment,,,,0,No,,No match
+FYI,836,Merged: Entertainment,[US] FYI,FYIChannel.us,EPG,100,Yes,exact,Matched
+getTV,837,Merged: Entertainment,,,,0,No,,No match
+GRIT,838,Merged: Entertainment,[US] GRIT TV,Grit.us,EPG,100,Yes,exact,Matched
+GSN,839,Merged: Entertainment,[US] GSN,DraftKingsNetwork.us,EPG,100,Yes,alias,Matched
+Hallmark Channel,840,Merged: Entertainment,[US] HALLMARK CHANNEL,HallmarkChannel.us,EPG,100,Yes,alias,Matched
+Hallmark Drama,841,Merged: Entertainment,[US] HALLMARK DRAMA,HallmarkFamily.us,EPG,100,Yes,exact,Matched
+IFC,842,Merged: Entertainment,[US] IFC,IFC.us,EPG,100,Yes,exact,Matched
+Ion,843,Merged: Entertainment,[US] ION,P+ScottishProfessionalFootballLeague11.us,EPG,100,Yes,exact,Matched
+LAFF TV,844,Merged: Entertainment,[US] LAFF,Laff.us,EPG,100,Yes,exact,Matched
+Lifetime,845,Merged: Entertainment,[US] LIFETIME,Lifetime.us,EPG,100,Yes,alias,Matched
+Lifetime Movie Network,846,Merged: Entertainment,[US] LIFETIME MOVIE,LifetimeMoviesNetwork.us,EPG,100,Fallback,alias,Matched (no programs)
+Logo,847,Merged: Entertainment,,,,0,No,,No match
+OWN: Oprah Winfrey Network,848,Merged: Entertainment,[US] OWN,OWN.us,EPG,100,Yes,alias,Matched
+Oxygen,849,Merged: Entertainment,,,,0,No,,No match
+Paramount Network,850,Merged: Entertainment,,,,0,No,,No match
+Pop,851,Merged: Entertainment,[US] POP,StingrayPopularClassical.us,EPG,100,Yes,alias,Matched
+ReelzChannel,852,Merged: Entertainment,[US] REELZ,ReelzChannel.us,EPG,100,Yes,alias,Matched
+Syfy,853,Merged: Entertainment,,,,0,No,,No match
+TBS,854,Merged: Entertainment,,,,0,No,,No match
+TNT,855,Merged: Entertainment,[US] TNT,TNT.us,EPG,100,Yes,alias,Matched
+truTV,856,Merged: Entertainment,,,,0,No,,No match
+TV Land,857,Merged: Entertainment,,,,0,No,,No match
+USA,859,Merged: Entertainment,,,,0,No,,No match
+Viceland,860,Merged: Entertainment,,,,0,No,,No match
+WE tv,861,Merged: Entertainment,[US] WE TV,WeTV.us,EPG,100,Yes,exact,Matched
+WGN America,862,Merged: Entertainment,,,,0,No,,No match
+Aspire,863,Merged: Entertainment,[US] ASPIRE,ASPiRE.us,EPG,100,Yes,exact,Matched
+CleoTV,864,Merged: Entertainment,[US] CLEO TV,CleoTV.us,EPG,100,Yes,alias,Matched
+E!,866,Merged: Entertainment,,,,0,No,,No match
+FOX Soul,867,Merged: Entertainment,[US] FOX SOUL,FOXSOUL.us,EPG,100,Yes,exact,Matched
+GET,868,Merged: Entertainment,,,,0,No,,No match
+Heroes & Icons (H&I),869,Merged: Entertainment,[US] HEROES & ICONS,HeroesAndIconsNetwork.us,EPG,100,Yes,alias,Matched
+ION East HD,870,Merged: Entertainment,[US] ION,P+ScottishProfessionalFootballLeague11.us,EPG,100,Yes,alias,Matched
+LMN,871,Merged: Entertainment,[US] LIFETIME MOVIE,LifetimeMoviesNetwork.us,EPG,100,Fallback,alias,Matched (no programs)
+MeTV,872,Merged: Entertainment,[US] ME TV,MeTV.us,EPG,100,Fallback,alias,Matched (no programs)
+Ovation,873,Merged: Entertainment,[US] OVATION,OvationTV.us,EPG,100,Yes,exact,Matched
+Pop TV,874,Merged: Entertainment,[US] POP,StingrayPopularClassical.us,EPG,100,Yes,exact,Matched
+REELZ,875,Merged: Entertainment,[US] REELZ,ReelzChannel.us,EPG,100,Yes,exact,Matched
+Revolt,876,Merged: Entertainment,[US] REVOLT,Revolt.us,EPG,100,Yes,exact,Matched
+Start TV,877,Merged: Entertainment,[US] START TV,StartTV.us,EPG,100,Yes,exact,Matched
+TV One (HD only),878,Merged: Entertainment,[US] TV ONE,TVOne.us,EPG,100,Yes,exact,Matched
+USA Network,880,Merged: Entertainment,,,,0,No,,No match
+Logo TV,884,Merged: Entertainment,,,,0,No,,No match
+TV One,886,Merged: Entertainment,[US] TV ONE,TVOne.us,EPG,100,Yes,exact,Matched
+UP,887,Merged: Entertainment,[US] UP TV,UP.us,EPG,100,Yes,exact,Matched
+VICE,888,Merged: Entertainment,[US] VICE,Vice.us,EPG,100,Yes,exact,Matched
+4seven,889,Merged: Entertainment,[UK] 4SEVEN,4seven.uk,EPG,100,Yes,exact,Matched
+5 USA,890,Merged: Entertainment,[UK] 5 USA,5USA.uk,EPG,100,Yes,exact,Matched
+5ACTION,891,Merged: Entertainment,[UK] 5 Action,5Action.uk,EPG,100,Yes,exact,Matched
+5SELECT,892,Merged: Entertainment,[UK] 5 SELECT,5SELECT.uk,EPG,100,Yes,exact,Matched
+5STAR,893,Merged: Entertainment,[UK] 5STAR,5STAR.uk,EPG,100,Yes,exact,Matched
+BBC Alba HD,894,Merged: Entertainment,[UK] BBC ALBA,BBCAlba.uk,EPG,100,Yes,exact,Matched
+BBC Scotland,896,Merged: Entertainment,[UK] BBC SCOTLAND,BBCScotland.uk,EPG,100,Yes,exact,Matched
+BLAZE,898,Merged: Entertainment,[UK] BLAZE,Blaze.uk,EPG,100,Fallback,exact,Matched (no programs)
+Challenge,899,Merged: Entertainment,[UK] CHALLENGE,Challenge.uk,EPG,100,Yes,exact,Matched
+E4,900,Merged: Entertainment,[UK] E4,E4.uk,EPG,100,Yes,exact,Matched
+E4 Extra,901,Merged: Entertainment,[UK] E4 EXTRA,E4Extra.uk,EPG,100,Yes,exact,Matched
+ITV2,903,Merged: Entertainment,[UK] ITV 2,ITV2.uk,EPG,100,Yes,exact,Matched
+ITV3,904,Merged: Entertainment,[UK] ITV 3,ITV3.uk,EPG,100,Yes,exact,Matched
+ITV4,905,Merged: Entertainment,[UK] ITV 4,ITV4.uk,EPG,100,Yes,exact,Matched
+More4,906,Merged: Entertainment,[UK] MORE4,More4.uk,EPG,100,Yes,exact,Matched
+MTV,907,Merged: Entertainment,[UK] MTV,MTV.uk,EPG,100,Fallback,alias,Matched (no programs)
+S4C,909,Merged: Entertainment,[UK] S4C,S4C.uk,EPG,100,Yes,exact,Matched
+Sky Arts,910,Merged: Entertainment,[UK] SKY ARTS,SkyArts.uk,EPG,100,Yes,exact,Matched
+Sky Atlantic,911,Merged: Entertainment,[UK] SKY ATLANTIC,SkyAtlantic.uk,EPG,100,Yes,exact,Matched
+Sky Comedy,912,Merged: Entertainment,[UK] SKY COMEDY,SkyComedy.uk,EPG,100,Yes,exact,Matched
+Sky Mix,913,Merged: Entertainment,,,,0,No,,No match
+Sky One,914,Merged: Entertainment,,,,0,No,,No match
+Sky Showcase,916,Merged: Entertainment,,,,0,No,,No match
+Sky Witness,917,Merged: Entertainment,[UK] SKY WITNESS,SkyWitness.uk,EPG,100,Yes,exact,Matched
+That's TV,918,Merged: Entertainment,[UK] THAT'S TV,ThatsTV.uk,EPG,100,Yes,exact,Matched
+Together,919,Merged: Entertainment,[UK] TOGETHER,TogetherTV+1.uk,EPG,100,Yes,exact,Matched
+U&alibi,920,Merged: Entertainment,[UK] ALIBI,UAndAlibi+1.uk,EPG,100,Yes,alias,Matched
+U&Dave,921,Merged: Entertainment,[UK] DAVE,UandDave.uk,EPG,100,Fallback,alias,Matched (no programs)
+U&GOLD,923,Merged: Entertainment,[UK] GOLD,Gold.uk,EPG,100,Fallback,alias,Matched (no programs)
+U&YESTERDAY,925,Merged: Entertainment,[UK] YESTERDAY,UandYesterday+1.uk,EPG,100,Yes,alias,Matched
+Cottage Life,1000,Merged: Reality & Lifestyle,[CA] COTTAGE LIFE,CottageLife.ca,EPG,100,Yes,exact,Matched
+DIY Network,1001,Merged: Reality & Lifestyle,,,,0,No,,No match
+DTOUR,1002,Merged: Reality & Lifestyle,[CA] DTOUR,DTOUR.ca,EPG,100,Yes,exact,Matched
+HGTV,1003,Merged: Reality & Lifestyle,[CA] HGTV,HGTV.ca,EPG,100,Fallback,alias,Matched (no programs)
+Slice,1004,Merged: Reality & Lifestyle,[CA] SLICE,Slice.ca,EPG,100,Yes,exact,Matched
+DIY,1006,Merged: Reality & Lifestyle,[US] DIY NETWORK,MagnoliaNetwork.us,EPG,100,Yes,alias,Matched
+HGTV,1008,Merged: Reality & Lifestyle,,,,0,No,,No match
+TLC,1009,Merged: Reality & Lifestyle,,,,0,No,,No match
+Bravo,1011,Merged: Reality & Lifestyle,,,,0,No,,No match
+Magnolia Network,1017,Merged: Reality & Lifestyle,,,,0,No,,No match
+OWN,1019,Merged: Reality & Lifestyle,[US] OWN,OWN.us,EPG,100,Yes,alias,Matched
+Say Yes To The Dress,1021,Merged: Reality & Lifestyle,,,,0,No,,No match
+The Design Network,1022,Merged: Reality & Lifestyle,[US] DESIGN NETWORK,TheDesignNetwork.us,EPG,100,Yes,exact,Matched
+The Pet Collective,1024,Merged: Reality & Lifestyle,[US] THE PET COLLECTIVE,ThePetCollective.us,EPG,100,Yes,exact,Matched
+UPTV,1026,Merged: Reality & Lifestyle,[US] UP TV,UP.us,EPG,100,Yes,alias,Matched
+Destination America,1027,Merged: Reality & Lifestyle,[US] DESTINATION AMERICA,DestinationAmerica.us,EPG,100,Yes,exact,Matched
+Discovery Life,1028,Merged: Reality & Lifestyle,[US] DISCOVERY LIFE,DiscoveryLifeChannel.us,EPG,100,Yes,exact,Matched
+E! Entertainment Television,1029,Merged: Reality & Lifestyle,,,,0,No,,No match
+FYI,1030,Merged: Reality & Lifestyle,[US] FYI,FYIChannel.us,EPG,100,Yes,exact,Matched
+WE tv,1031,Merged: Reality & Lifestyle,[US] WE TV,WeTV.us,EPG,100,Yes,exact,Matched
+DMAX,1032,Merged: Reality & Lifestyle,[UK] DMAX,DMAX.uk,EPG,100,Yes,exact,Matched
+Quest Red,1033,Merged: Reality & Lifestyle,[UK] QUEST RED,QuestRed.uk,EPG,100,Yes,exact,Matched
+Really,1034,Merged: Reality & Lifestyle,[UK] REALLY,Really.uk,EPG,100,Yes,exact,Matched
+Peachtree TV,1101,Merged: Comedy,,,,0,No,,No match
+The Comedy Network,1102,Merged: Comedy,,,,0,No,,No match
+Comedy Central,1103,Merged: Comedy,[US] COMEDY TV,ComedyTV.us,EPG,100,Yes,alias,Matched
+BOUNCE TV,1109,Merged: Comedy,[US] BOUNCE TV,BounceTV.us,EPG,100,Yes,exact,Matched
+Comedy TV,1111,Merged: Comedy,[US] COMEDY TV,ComedyTV.us,EPG,100,Yes,exact,Matched
+Cozi TV,1112,Merged: Comedy,[US] COZI,CoziTV.us,EPG,100,Yes,exact,Matched
+FailArmy,1113,Merged: Comedy,[US] FAIL ARMY,FailArmy.us,EPG,100,Yes,exact,Matched
+GRIT,1115,Merged: Comedy,[US] GRIT TV,Grit.us,EPG,100,Yes,exact,Matched
+Three Stooges,1123,Merged: Comedy,,,,0,No,,No match
+truTV,1124,Merged: Comedy,,,,0,No,,No match
+Game Show Network,1125,Merged: Comedy,[US] GAME SHOW NETWORK,GameShowNetwork.us,EPG,100,Yes,exact,Matched
+POP,1126,Merged: Comedy,[US] POP,StingrayPopularClassical.us,EPG,100,Yes,exact,Matched
+REELZ,1127,Merged: Comedy,[US] REELZ,ReelzChannel.us,EPG,100,Yes,exact,Matched
+TBS,1128,Merged: Comedy,,,,0,No,,No match
+TV Land,1129,Merged: Comedy,,,,0,No,,No match
+Comedy Central,1130,Merged: Comedy,[UK] COMEDY CENTRAL,ComedyCentral.uk,EPG,100,Fallback,alias,Matched (no programs)
+Comedy Central Xtra,1131,Merged: Comedy,[UK] COMEDY CENTRAL EXTRA,ComedyCentralExtra.uk,EPG,95,Yes,fuzzy (95),Matched
+Animal Planet,1200,Merged: Discovery,,,,0,No,,No match
+Discovery Channel,1202,Merged: Discovery,,,,0,No,,No match
+Discovery Science,1203,Merged: Discovery,,,,0,No,,No match
+Discovery Velocity,1204,Merged: Discovery,,,,0,No,,No match
+Documentary,1205,Merged: Discovery,[CA] DOCUMENTARY,DocumentaryCanada.ca,EPG,100,Fallback,exact,Matched (no programs)
+H2,1206,Merged: Discovery,[CA] H2,HISTORY2.ca,EPG,100,Yes,exact,Matched
+History,1207,Merged: Discovery,[CA] HISTORY,History.ca,EPG,100,Fallback,exact,Matched (no programs)
+Love Nature,1208,Merged: Discovery,[CA] LOVE NATURE,LoveNature.ca,EPG,100,Fallback,exact,Matched (no programs)
+National Geographic Channel,1209,Merged: Discovery,[CA] NATIONAL GEOGRAPHIC,NationalGeographic.ca,EPG,100,Yes,alias,Matched
+Nat Geo Wild,1210,Merged: Discovery,[CA] NAT GEO WILD,NationalGeographicWild.ca,EPG,100,Fallback,alias,Matched (no programs)
+Smithsonian Channel,1211,Merged: Discovery,[CA] SMITHSONIAN,SmithsonianChannel.ca,EPG,100,Fallback,alias,Matched (no programs)
+American Heroes Channel,1212,Merged: Discovery,[US] AMERICAN HEROES CHANNEL,AmericanHeroesChannel.us,EPG,100,Yes,alias,Matched
+Destination America,1213,Merged: Discovery,[US] DESTINATION AMERICA,DestinationAmerica.us,EPG,100,Yes,exact,Matched
+Discovery Channel,1214,Merged: Discovery,,,,0,No,,No match
+Discovery Family,1215,Merged: Discovery,[US] DISCOVERY FAMILY,DiscoveryFamilyChannel.us,EPG,100,Yes,exact,Matched
+History,1216,Merged: Discovery,[US] HISTORY CHANNEL,History.us,EPG,100,Yes,exact,Matched
+National Geographic,1217,Merged: Discovery,[US] NAT GEO,NationalGeographic.us,EPG,100,Fallback,alias,Matched (no programs)
+Nat Geo WILD,1218,Merged: Discovery,[US] NAT GEO WILD,NationalGeographicWild.us,EPG,100,Yes,alias,Matched
+Science,1219,Merged: Discovery,[US] DISCOVERY SCIENCE,ScienceChannel.us,EPG,100,Yes,alias,Matched
+Smithsonian Channel,1220,Merged: Discovery,,,,0,No,,No match
+Animal Planet,1221,Merged: Discovery,[US] ANIMAL PLANET,AnimalPlanet.us,EPG,100,Yes,alias,Matched
+Bizarre Foods with Andrew Zimmern,1223,Merged: Discovery,,,,0,No,,No match
+Bob Ross,1224,Merged: Discovery,[US] THE BOB ROSS CHANNEL,TheBobRossChannel.us,EPG,100,Yes,exact,Matched
+Discovery,1227,Merged: Discovery,,,,0,No,,No match
+Discovery Family Channel,1228,Merged: Discovery,[US] DISCOVERY FAMILY,DiscoveryFamilyChannel.us,EPG,100,Yes,exact,Matched
+Discovery Life,1229,Merged: Discovery,[US] DISCOVERY LIFE,DiscoveryLifeChannel.us,EPG,100,Yes,exact,Matched
+Documentary+,1230,Merged: Discovery,[US] DOCUMENTARY,Documentary+.us,EPG,100,Yes,fuzzy (100),Matched
+Duck Dynasty,1231,Merged: Discovery,,,,0,No,,No match
+"HISTORY Channel, The",1235,Merged: Discovery,[US] HISTORY CHANNEL,History.us,EPG,100,Yes,alias,Matched
+Love Nature,1240,Merged: Discovery,[US] Love Nature,LoveNature.us,EPG,100,Yes,exact,Matched
+Modern Marvels,1243,Merged: Discovery,,,,0,No,,No match
+Mysterious Worlds,1245,Merged: Discovery,,,,0,No,,No match
+National Geographic Channel,1246,Merged: Discovery,[US] NAT GEO,NationalGeographic.us,EPG,100,Fallback,alias,Matched (no programs)
+History Channel,1249,Merged: Discovery,[US] HISTORY CHANNEL,History.us,EPG,100,Yes,exact,Matched
+Military History Channel,1250,Merged: Discovery,[US] MILITARY HISTORY,MilitaryHistoryChannel.us,EPG,100,Yes,exact,Matched
+Motor Trend,1251,Merged: Discovery,,,,0,No,,No match
+Animal Planet,1252,Merged: Discovery,[UK] ANIMAL PLANET,AnimalPlanet.uk,EPG,100,Fallback,alias,Matched (no programs)
+Discovery,1253,Merged: Discovery,[UK] DISCOVERY CHANNEL,DiscoveryChannel.uk,EPG,100,Fallback,alias,Matched (no programs)
+Discovery History,1254,Merged: Discovery,[UK] DISCOVERY HISTORY,DiscoveryHistory.uk,EPG,100,Yes,alias,Matched
+Discovery Turbo,1255,Merged: Discovery,[UK] DISCOVERY TURBO,DiscoveryTurbo.uk,EPG,100,Fallback,alias,Matched (no programs)
+Discovery Science,1256,Merged: Discovery,,,,0,No,,No match
+GREAT! tv,1257,Merged: Discovery,[UK] GREAT TV,GREAT!tv.uk,EPG,100,Yes,fuzzy (100),Matched
+National Geographic,1258,Merged: Discovery,[UK] NAT GEO,NationalGeographicChannel.uk,EPG,100,Fallback,alias,Matched (no programs)
+Nat Geo Wild,1259,Merged: Discovery,[UK] NAT GEO WILD,NationalGeographicWild.uk,EPG,100,Fallback,alias,Matched (no programs)
+Sky Documentaries,1260,Merged: Discovery,[UK] SKY DOCUMENTARIES,SkyDocumentaries.uk,EPG,100,Yes,exact,Matched
+Sky History,1261,Merged: Discovery,[UK] SKY HISTORY,SkyHistory.uk,EPG,100,Yes,exact,Matched
+Sky History 2,1262,Merged: Discovery,[UK] SKY HISTORY 2,SkyHistory2.uk,EPG,100,Yes,exact,Matched
+Sky Nature,1263,Merged: Discovery,[UK] SKY NATURE,SkyNature.uk,EPG,100,Yes,exact,Matched
+Crime+ Investigation,1300,Merged: Crime,[CA] CRIME & INVESTIGATION,CrimePlusInvestigation.ca,EPG,100,Yes,fuzzy (100),Matched
+Investigation Discovery,1301,Merged: Crime,[CA] INVESTIGATION DISCOVERY,InvestigationDiscovery.ca,EPG,100,Yes,alias,Matched
+Crime & Investigation,1302,Merged: Crime,,,,0,No,,No match
+Investigation Discovery,1303,Merged: Crime,,,,0,No,,No match
+Justice Central,1304,Merged: Crime,[US] JUSTICE CENTRAL,JusticeCentral.us,EPG,100,Yes,exact,Matched
+Justice Network,1305,Merged: Crime,[US] JUSTICE CENTRAL,JusticeCentral.us,EPG,100,Yes,exact,Matched
+Cold Case Files,1306,Merged: Crime,,,,0,No,,No match
+Court TV,1308,Merged: Crime,[US] COURT TV,CourtTV.us,EPG,100,Yes,exact,Matched
+Crime 360,1309,Merged: Crime,,,,0,No,,No match
+Crime Scenes,1310,Merged: Crime,,,,0,No,,No match
+Living With Evil,1313,Merged: Crime,,,,0,No,,No match
+Love Kills,1314,Merged: Crime,,,,0,No,,No match
+Oxygen True Crime,1316,Merged: Crime,,,,0,No,,No match
+Oxygen True Crime Archives,1317,Merged: Crime,,,,0,No,,No match
+True Crime Now,1319,Merged: Crime,[US] TRUE CRIME NOW,TrueCrimeNow.us,EPG,100,Yes,exact,Matched
+Crime & Investigation Network,1320,Merged: Crime,,,,0,No,,No match
+Law & Crime Network,1322,Merged: Crime,,,,0,No,,No match
+Court TV,1323,Merged: Crime,[UK] COURT TV,CourtTV.uk,EPG,100,Fallback,exact,Matched (no programs)
+Crime+Investigation,1324,Merged: Crime,[UK] CRIME INVESTIGATION,Crime+Investigation.uk,EPG,97,Fallback,exact,Matched (no programs)
+ID,1325,Merged: Crime,[UK] ID,ESRealMadridTV.uk,EPG,100,Fallback,exact,Matched (no programs)
+LEGEND,1326,Merged: Crime,[UK] LEGEND,Legend.uk,EPG,100,Yes,exact,Matched
+Sky Crime,1327,Merged: Crime,[UK] SKY CRIME,SkyCrime.uk,EPG,100,Yes,exact,Matched
+EWTN,1401,Merged: Faith,[CA] EWTN,EWTN.ca,EPG,100,Yes,exact,Matched
+Hope TV,1402,Merged: Faith,,,,0,No,,No match
+Miracle Channel,1403,Merged: Faith,,,,0,No,,No match
+Vision TV,1405,Merged: Faith,[CA] VISION,EEntertainmentTelevision.ca,EPG,100,Yes,exact,Matched
+Daystar,1407,Merged: Faith,[US] DAYSTAR,DAYSTAR.us,EPG,100,Yes,exact,Matched
+INSP,1409,Merged: Faith,[US] INSP,INSP.us,EPG,100,Yes,exact,Matched
+TBN,1412,Merged: Faith,[US] TBN,TBN.us,EPG,100,Yes,exact,Matched
+Victory,1415,Merged: Faith,[US] VICTORY CHANNEL,VictoryChannel.us,EPG,100,Yes,exact,Matched
+Dove TV,1416,Merged: Faith,[US] DOVE,DoveChannel.us,EPG,100,Yes,exact,Matched
+EWTN,1420,Merged: Faith,,,,0,No,,No match
+The Word,1425,Merged: Faith,[US] THE WORD NETWORK,TheWordNetwork.us,EPG,100,Yes,exact,Matched
+DAYSTAR,1427,Merged: Faith,[UK] DAYSTAR,DAYSTAR.uk,EPG,100,Fallback,exact,Matched (no programs)
+Faith World TV,1431,Merged: Faith,[UK] FAITH WORLD TV,FaithWorldTV.uk,EPG,100,Yes,exact,Matched
+GOD Channel,1432,Merged: Faith,[UK] GOD CHANNEL,GodChannel.uk,EPG,100,Fallback,exact,Matched (no programs)
+LoveWorld,1434,Merged: Faith,,,,0,No,,No match
+Revelation,1435,Merged: Faith,[UK] REVELATION,revelation.uk,EPG,100,Yes,exact,Matched
+TBN UK,1437,Merged: Faith,[UK] TBN UK,TBN.uk,EPG,100,Yes,exact,Matched
+BET,1500,Merged: Music,,,,0,No,,No match
+CMT,1501,Merged: Music,[CA] CMT,CMT.ca,EPG,100,Fallback,alias,Matched (no programs)
+MTV,1503,Merged: Music,[CA] MTV,CMTV.ca,EPG,100,Fallback,alias,Matched (no programs)
+MTV2,1504,Merged: Music,,,,0,No,,No match
+MuchMusic,1506,Merged: Music,,,,0,No,,No match
+CMT,1510,Merged: Music,[US] CMT,CMT.us,EPG,100,Yes,alias,Matched
+CMT Music,1511,Merged: Music,[US] CMT MUSIC,CMTMusic.us,EPG,100,Yes,exact,Matched
+FM,1512,Merged: Music,[US] FM,LaffMore.us,EPG,100,Yes,exact,Matched
+Fuse,1513,Merged: Music,[US] FUSE,Fuse.us,EPG,100,Yes,exact,Matched
+MTV,1514,Merged: Music,[US] MTV,MTV.us,EPG,100,Yes,alias,Matched
+MTV2,1515,Merged: Music,[US] MTV 2,MTV2.us,EPG,100,Yes,alias,Matched
+MTV Classic,1516,Merged: Music,[US] MTV CLASSIC,MTVClassic.us,EPG,100,Yes,exact,Matched
+MTV Live,1517,Merged: Music,[US] MTV LIVE,MTVLive.us,EPG,100,Yes,exact,Matched
+mtvU,1518,Merged: Music,[US] MTV U,mtvU.us,EPG,100,Yes,exact,Matched
+VH1,1519,Merged: Music,,,,0,No,,No match
+BET Gospel,1523,Merged: Music,[US] BET GOSPEL,BETGospel.us,EPG,100,Yes,exact,Matched
+BET Jams,1524,Merged: Music,[US] BET JAMS,BETJams.us,EPG,100,Yes,exact,Matched
+BET Soul,1525,Merged: Music,[US] BET SOUL,BETSOUL.us,EPG,100,Yes,exact,Matched
+NickMusic,1527,Merged: Music,[US] NICK MUSIC,NickMusic.us,EPG,100,Yes,exact,Matched
+REVOLT,1528,Merged: Music,[US] REVOLT,Revolt.us,EPG,100,Yes,exact,Matched
+Clubland TV,1530,Merged: Music,[UK] CLUBLAND TV,ClublandTV.uk4,EPG,100,Yes,exact,Matched
+NOW 70s,1532,Merged: Music,[UK] NOW 70S,NOW70s.uk,EPG,100,Yes,exact,Matched
+NOW 80s,1533,Merged: Music,[UK] NOW 80S,NOW80s.uk,EPG,100,Yes,exact,Matched
+NOW ROCK,1535,Merged: Music,[UK] NOW ROCK,NOWRock.uk,EPG,100,Yes,exact,Matched
+The Shopping Channel,1600,Merged: Shopping,[CA] SHOPPING,TodaysShoppingChoice.ca,EPG,100,Yes,exact,Matched
+Gem Shopping Network,1602,Merged: Shopping,[US] GEM SHOPPING,GEMShoppingNetwork.us,EPG,100,Yes,exact,Matched
+HSN,1603,Merged: Shopping,[US] HSN,HSN.us,EPG,100,Yes,exact,Matched
+HSN2,1604,Merged: Shopping,[US] HSN 2,HSN2.us,EPG,100,Yes,exact,Matched
+QVC,1606,Merged: Shopping,[US] QVC,QVC.us,EPG,100,Yes,exact,Matched
+QVC 2,1607,Merged: Shopping,[US] QVC 2,QVC2.us,EPG,100,Yes,exact,Matched
+QVC3,1611,Merged: Shopping,[US] QVC 3,QVC3.us,EPG,100,Yes,exact,Matched
+Best Direct,1612,Merged: Shopping,[UK] BEST DIRECT,BestDirect.uk,EPG,100,Yes,exact,Matched
+QVC,1620,Merged: Shopping,[UK] QVC,QVC.uk,EPG,100,Fallback,exact,Matched (no programs)
+TJC,1621,Merged: Shopping,[UK] TJC,TJC.uk,EPG,100,Yes,exact,Matched
+TV Warehouse,1622,Merged: Shopping,[UK] TV WAREHOUSE,TVWarehouse.uk,EPG,100,Yes,exact,Matched
+Telelatino,1700,Merged: Spanish,,,,0,No,,No match
+Univision,1701,Merged: Spanish,,,,0,No,,No match
+ESPN Deportes,1706,Merged: Spanish,[US] ESPN DEPORTES,ESPNDeportes.us,EPG,100,Yes,exact,Matched
+Estrella TV,1707,Merged: Spanish,[US] ESTRELLA TV,EstrellaTV.us,EPG,100,Yes,exact,Matched
+Galavision,1708,Merged: Spanish,[US] GALAVISION,Galavision.us,EPG,100,Yes,exact,Matched
+NBC Universo,1710,Merged: Spanish,,,,0,No,,No match
+Telemundo,1711,Merged: Spanish,[US] TELEMUNDO,Telemundo.us,EPG,100,Yes,alias,Matched
+UniMas,1712,Merged: Spanish,,,,0,No,,No match
+Galavisión,1717,Merged: Spanish,[US] GALAVISION,Galavision.us,EPG,100,Yes,fuzzy (100),Matched
+TUDN,1719,Merged: Spanish,[US] TUDN,TUDN.us,EPG,100,Yes,alias,Matched
+UniMás,1720,Merged: Spanish,,,,0,No,,No match
+UNIVERSO,1721,Merged: Spanish,[US] UNIVERSO,UNIVERSO.us,EPG,100,Yes,exact,Matched
+Univision (Este),1722,Merged: Spanish,[US] UNIVISION NETWORK HD,Univision.us,EPG,100,Yes,exact,Matched
+Antena 3,1723,Merged: Spanish,,,,0,No,,No match
+beIN Sports en Español,1724,Merged: Spanish,,,,0,No,,No match
+Canal SUR,1725,Merged: Spanish,[US] CANAL SUR,CanalSur.us,EPG,100,Yes,exact,Matched
+Discovery En Español,1727,Merged: Spanish,[US] DISCOVERY EN ESPANOL,DiscoveryEnEspanol.us,EPG,97,Yes,exact,Matched
+Discovery Familia,1728,Merged: Spanish,[US] DISCOVERY FAMILIA,DiscoveryFamilia.us,EPG,100,Yes,exact,Matched
+Fox Deportes,1729,Merged: Spanish,[US] FOX DEPORTES,FoxDeportes.us,EPG,100,Yes,exact,Matched
+HBO Latino,1730,Merged: Spanish,,,,0,No,,No match
+MAX Latino,1731,Merged: Spanish,,,,0,No,,No match
+Nat Geo Mundo,1732,Merged: Spanish,[US] NAT GEO MUNDO,NatGeoMundo.us,EPG,100,Yes,exact,Matched
+Starz Encore Español,1733,Merged: Spanish,,,,0,No,,No match
+Univision tINovelas,1736,Merged: Spanish,,,,0,No,,No match
+OLN,1800,Merged: Outdoors,,,,0,No,,No match
+Wild TV,1801,Merged: Outdoors,[CA] WILD TV,WILDTV.ca,EPG,100,Yes,exact,Matched
+World Fishing Network,1802,Merged: Outdoors,,,,0,No,,No match
+Great American Country,1803,Merged: Outdoors,[US] GREAT AMERICAN COUNTRY,GreatAmericanFamily.us,EPG,100,Yes,exact,Matched
+MotorTrend,1805,Merged: Outdoors,,,,0,No,,No match
+Outdoor Channel,1806,Merged: Outdoors,[US] OUTDOOR CHANNEL,OutdoorChannel.us,EPG,100,Yes,exact,Matched
+Ride TV,1808,Merged: Outdoors,[US] RIDE TV,GreatAmericanLiving.us,EPG,100,Yes,exact,Matched
+Sportsman Channel,1809,Merged: Outdoors,[US] SPORTSMAN CHANNEL,SportsmanChannel.us,EPG,100,Yes,exact,Matched
+The Cowboy Channel,1810,Merged: Outdoors,[US] THE COWBOY CHANNEL,TheCowboyChannel.us,EPG,100,Yes,exact,Matched
+Travel Channel,1811,Merged: Outdoors,,,,0,No,,No match
+World Fishing Network,1812,Merged: Outdoors,[US] WORLD FISHING NETWORK,WorldFishingNetwork.us,EPG,100,Yes,exact,Matched
+Cowboy Channel,1813,Merged: Outdoors,[US] THE COWBOY CHANNEL,TheCowboyChannel.us,EPG,100,Yes,exact,Matched
+Great American Family,1818,Merged: Outdoors,,,,0,No,,No match
+Pursuit Channel,1820,Merged: Outdoors,[US] PURSUIT CHANNEL,PursuitChannel.us,EPG,100,Yes,exact,Matched
+RFD-TV,1822,Merged: Outdoors,[US] RFD-TV,RFDTV.us,EPG,100,Yes,exact,Matched
+Speedvision,1825,Merged: Outdoors,[US] SPEEDVISION,SPEEDVISION.us,EPG,100,Yes,exact,Matched
+Waypoint TV,1827,Merged: Outdoors,[US] WAYPOINT TV,WaypointTV.us,EPG,100,Yes,exact,Matched
+WIRED2fish TV,1828,Merged: Outdoors,[US] WIRED2FISH,Wired2Fish.us,EPG,100,Yes,exact,Matched
+FanDuel TV,1830,Merged: Outdoors,[US] TVG NETWORK,FanDuelTV.us,EPG,100,Fallback,alias,Matched (no programs)
+MAV TV,1831,Merged: Outdoors,,,,0,No,,No match
+Pursuit,1834,Merged: Outdoors,[US] PURSUIT CHANNEL,PursuitChannel.us,EPG,100,Yes,exact,Matched
+PBS America,1835,Merged: Outdoors,[UK] PBS AMERICA,PBSAmerica.uk,EPG,100,Yes,exact,Matched
+Quest,1836,Merged: Outdoors,[UK] QUEST,Quest.uk,EPG,100,Yes,exact,Matched
+Food Network,1900,Merged: Food & Travel,[CA] FOOD NETWORK,FoodNetwork.ca,EPG,100,Fallback,alias,Matched (no programs)
+Gusto TV,1901,Merged: Food & Travel,[CA] GUSTO HD,Gusto.ca,EPG,100,Yes,exact,Matched
+Travel + Escape,1902,Merged: Food & Travel,,,,0,No,,No match
+Cooking Channel,1903,Merged: Food & Travel,[US] COOKING CHANNEL,CookingChannel.us,EPG,100,Yes,alias,Matched
+Food Network,1904,Merged: Food & Travel,,,,0,No,,No match
+Gusto TV,1907,Merged: Food & Travel,,,,0,No,,No match
+Recipe TV,1909,Merged: Food & Travel,[US] RECIPE TV,RecipeTV.us,EPG,100,Yes,alias,Matched
+Tastemade,1910,Merged: Food & Travel,[US] TASTEMADE,Tastemade.us,EPG,100,Yes,exact,Matched
+Tastemade Home,1911,Merged: Food & Travel,[US] TASTEMADE,Tastemade.us,EPG,100,Yes,alias,Matched
+Travel Channel,1913,Merged: Food & Travel,,,,0,No,,No match
+Food Network,1914,Merged: Food & Travel,[UK] FOOD NETWORK,FoodNetwork.uk,EPG,100,Fallback,alias,Matched (no programs)

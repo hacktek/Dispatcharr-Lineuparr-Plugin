@@ -48,7 +48,7 @@ LOG_PREFIX = "[Lineuparr]"
 
 
 class PluginConfig:
-    PLUGIN_VERSION = "1.26.1051526"
+    PLUGIN_VERSION = "1.26.1062103"
 
     DEFAULT_FUZZY_MATCH_THRESHOLD = 80
     DEFAULT_PRIORITIZE_QUALITY = True
@@ -71,6 +71,7 @@ class PluginConfig:
     COUNTRY_DIR_MAP = {
         "US": "united-states",
         "CA": "canada",
+        "UK": "united-kingdom",
         "GB": "united-kingdom",
         "AU": "australia",
         "DE": "germany",
@@ -550,6 +551,58 @@ class Plugin:
         return (countries[0], provider) if countries else (None, provider)
 
     @staticmethod
+    def _normalize_country_code(country_code):
+        """Normalize country codes used in lineup metadata."""
+        cc = str(country_code or "").strip().upper()
+        if cc == "GB":
+            return "UK"
+        return cc or None
+
+    def _get_entry_country(self, entry, fallback_countries=None):
+        """Get per-channel country from lineup entry, else fallback lineup country."""
+        cc = self._normalize_country_code(entry.get("country"))
+        if cc:
+            return cc
+        if fallback_countries:
+            for country in fallback_countries:
+                cc = self._normalize_country_code(country)
+                if cc:
+                    return cc
+        return None
+
+    def _collect_lineup_entry_countries(self, lineup, fallback_countries=None):
+        """Collect all countries referenced by lineup entries."""
+        countries = set()
+        for channels in lineup.get("categories", {}).values():
+            for entry in channels:
+                cc = self._get_entry_country(entry, fallback_countries)
+                if cc:
+                    countries.add(cc)
+        return countries
+
+    @staticmethod
+    def _make_existing_channel_lookup(channels):
+        """Index channels by both (name, group, number) and legacy (name, group)."""
+        lookup = {}
+        for ch in channels:
+            group_id = ch['channel_group_id']
+            name = ch['name']
+            number = ch.get('channel_number')
+            lookup.setdefault((name, group_id), ch)
+            if number is not None:
+                lookup[(name, group_id, number)] = ch
+        return lookup
+
+    @staticmethod
+    def _get_existing_channel_record(existing_lookup, name, group_id, number=None):
+        """Resolve channel by number-aware key first, then legacy key."""
+        if number is not None:
+            found = existing_lookup.get((name, group_id, number))
+            if found:
+                return found
+        return existing_lookup.get((name, group_id))
+
+    @staticmethod
     def _extract_epg_country(tvg_id):
         """Extract 2-letter country code from a tvg_id like 'CNN.us' or 'CNN.US_source1'.
         Returns lowercase country code or None."""
@@ -558,20 +611,216 @@ class Plugin:
         m = re.match(r'^.+\.([a-zA-Z]{2})(?:_.*)?$', tvg_id)
         return m.group(1).lower() if m else None
 
+    @classmethod
+    def _extract_epg_entry_country(cls, entry):
+        """Extract country from EPG entry using tvg_id first, then name prefix markers."""
+        tvg_country = cls._extract_epg_country(entry.get('tvg_id', ''))
+        if tvg_country:
+            return tvg_country
+        name_country = detect_stream_country(entry.get('name', ''))
+        return name_country.lower() if name_country else None
+
     @staticmethod
-    def _pick_epg_by_country(entries, country_code):
-        """From a list of EPG entries for the same name, prefer the one matching country_code.
-        Falls back to first entry if no country match found."""
+    def _extract_region_hint(value):
+        """Extract coarse feed region from channel/EPG text."""
+        text = (value or "").strip().lower()
+        if not text:
+            return None
+        if "pacific" in text:
+            return "pacific"
+        if re.search(r'\bwest\b', text):
+            return "west"
+        if re.search(r'\beast\b', text):
+            return "east"
+        if re.search(r'\(\s*p\s*\)', text):
+            return "pacific"
+        if re.search(r'\(\s*w\s*\)', text):
+            return "west"
+        if re.search(r'\(\s*e\s*\)', text):
+            return "east"
+        return None
+
+    @staticmethod
+    def _strip_region_hint(value):
+        """Strip coarse feed-region words from channel name for fallback matching."""
+        text = (value or "").strip()
+        if not text:
+            return text
+        text = re.sub(r'\(\s*[ewp]\s*\)', ' ', text, flags=re.IGNORECASE)
+        text = re.sub(r'\b(?:east|west|pacific)\b', ' ', text, flags=re.IGNORECASE)
+        text = re.sub(r'\s+', ' ', text).strip(' /-')
+        return re.sub(r'\s+', ' ', text).strip()
+
+    @classmethod
+    def _build_epg_query_variants(cls, channel_name):
+        """Build query variants for EPG matching."""
+        variants = []
+        primary = (channel_name or "").strip()
+        desired_region = cls._extract_region_hint(primary)
+        stripped = cls._strip_region_hint(primary)
+
+        for candidate in [primary, stripped]:
+            if candidate and candidate.lower() not in {v.lower() for v in variants}:
+                variants.append(candidate)
+
+        if stripped:
+            extras = []
+            if desired_region is None:
+                extras.append(f"{stripped} East")
+            elif desired_region == "east":
+                extras.append(f"{stripped} East")
+            elif desired_region == "west":
+                extras.extend([f"{stripped} West", f"{stripped} Pacific"])
+            elif desired_region == "pacific":
+                extras.extend([f"{stripped} Pacific", f"{stripped} West"])
+
+            for candidate in extras:
+                if candidate and candidate.lower() not in {v.lower() for v in variants}:
+                    variants.append(candidate)
+        return variants
+
+    @classmethod
+    def _extract_epg_region(cls, entry):
+        """Extract feed region from EPG entry name/tvg_id when present."""
+        name_region = cls._extract_region_hint(entry.get('name', ''))
+        if name_region:
+            return name_region
+        return cls._extract_region_hint(entry.get('tvg_id', ''))
+
+    @classmethod
+    def _score_epg_region(cls, entry_region, desired_region):
+        """Score EPG region preference. Lower is better."""
+        if desired_region == "pacific":
+            if entry_region == "pacific":
+                return 0
+            if entry_region == "west":
+                return 1
+            if entry_region is None:
+                return 2
+            if entry_region == "east":
+                return 3
+        elif desired_region == "west":
+            if entry_region in {"west", "pacific"}:
+                return 0
+            if entry_region is None:
+                return 1
+            if entry_region == "east":
+                return 2
+        elif desired_region == "east":
+            if entry_region is None:
+                return 0
+            if entry_region == "east":
+                return 1
+            if entry_region in {"west", "pacific"}:
+                return 2
+        else:
+            if entry_region is None:
+                return 0
+            if entry_region == "east":
+                return 1
+            if entry_region in {"west", "pacific"}:
+                return 2
+        return 3
+
+    @classmethod
+    def _pick_epg_by_country(cls, entries, country_code, channel_name=None):
+        """Pick best EPG entry by country first, then feed-region preference."""
         if not entries:
             return None
-        if not country_code:
-            return entries[0]
-        cc = country_code.lower()
-        for e in entries:
-            epg_cc = Plugin._extract_epg_country(e.get('tvg_id', ''))
-            if epg_cc == cc:
-                return e
-        return entries[0]
+        desired_country = (country_code or "").lower()
+        desired_region = cls._extract_region_hint(channel_name or "")
+
+        ranked = sorted(
+            entries,
+            key=lambda e: (
+                0 if (desired_country and cls._extract_epg_country(e.get('tvg_id', '')) == desired_country) else 1,
+                cls._score_epg_region(cls._extract_epg_region(e), desired_region),
+                str(e.get('tvg_id', '')).lower(),
+                str(e.get('name', '')).lower(),
+            )
+        )
+        return ranked[0]
+
+    @classmethod
+    def _pick_epg_from_matches(cls, matches, epg_lookup, country_code, channel_name=None, max_names=12):
+        """Pick best EPG entry across several matched names, not only top name."""
+        desired_country = (country_code or "").lower()
+        desired_region = cls._extract_region_hint(channel_name or "")
+        ranked = []
+
+        for match_rank, (epg_name, match_score, match_method) in enumerate(matches[:max_names]):
+            for entry in epg_lookup.get(epg_name, []):
+                entry_country = cls._extract_epg_entry_country(entry)
+                entry_region = cls._extract_epg_region(entry)
+                ranked.append((
+                    0 if (desired_country and entry_country == desired_country) else 1,
+                    cls._score_epg_region(entry_region, desired_region),
+                    -match_score,
+                    match_rank,
+                    str(entry.get('tvg_id', '')).lower(),
+                    entry,
+                    match_method,
+                    match_score,
+                ))
+
+        if not ranked:
+            return None, 0, None
+
+        ranked.sort(key=lambda item: item[:5])
+        best = ranked[0]
+        return best[5], best[7], best[6]
+
+    @classmethod
+    def _filter_epg_entries_for_country(cls, entries, country_code):
+        """Prefer same-country EPG entries for matching. Keep unlabeled as fallback pool."""
+        desired_country = (country_code or "").lower()
+        if not desired_country:
+            return list(entries)
+
+        same_country = []
+        unlabeled = []
+        for entry in entries:
+            entry_country = cls._extract_epg_entry_country(entry)
+            if entry_country == desired_country:
+                same_country.append(entry)
+            elif not entry_country:
+                unlabeled.append(entry)
+
+        if same_country:
+            return same_country + unlabeled
+        return unlabeled or list(entries)
+
+    @staticmethod
+    def _build_epg_candidate_lookup(entries):
+        """Build searchable candidate labels from both EPG name and tvg_id."""
+        lookup = {}
+        for entry in entries:
+            labels = [entry.get('name', ''), entry.get('tvg_id', '')]
+            labels.extend(Plugin._derive_tvg_id_labels(entry.get('tvg_id', '')))
+            for label in labels:
+                label = (label or '').strip()
+                if not label:
+                    continue
+                lookup.setdefault(label, []).append(entry)
+        return lookup
+
+    @staticmethod
+    def _derive_tvg_id_labels(tvg_id):
+        """Derive extra searchable labels from tvg_id stem."""
+        tvg_id = (tvg_id or "").strip()
+        if not tvg_id:
+            return []
+
+        # Example: ESPN.us2 -> ESPN, TCMPacific.us -> TCM Pacific
+        stem = re.sub(r'\.[A-Za-z]{2}\d*(?:_.*)?$', '', tvg_id)
+        if not stem:
+            return []
+
+        labels = [stem]
+        spaced = re.sub(r'(Pacific|West|East)$', r' \1', stem, flags=re.IGNORECASE)
+        if spaced != stem:
+            labels.append(spaced)
+        return labels
 
     def _get_group_prefix(self, settings, lineup_data):
         """Get the group prefix (user override or auto from lineup package name).
@@ -729,6 +978,30 @@ class Plugin:
                     else:
                         alias_map[k] = v
             logger.info(f"{LOG_PREFIX} Merged {len(custom)} custom aliases from {source}")
+
+        # Auto-alias league-prefixed team channels so streams can omit the league tag.
+        # Example: "NHL Boston Bruins" -> "Boston Bruins"
+        dynamic_aliases = {}
+        for channel_name in list(alias_map.keys()):
+            if channel_name.startswith("NHL ") and len(channel_name) > 4:
+                dynamic_aliases.setdefault(channel_name, []).append(channel_name[4:].strip())
+
+        lineup_data = self._lineup_cache
+        if lineup_data and isinstance(lineup_data.get("categories"), dict):
+            for channels in lineup_data["categories"].values():
+                for entry in channels:
+                    channel_name = entry.get("name")
+                    if isinstance(channel_name, str) and channel_name.startswith("NHL ") and len(channel_name) > 4:
+                        dynamic_aliases.setdefault(channel_name, []).append(channel_name[4:].strip())
+
+        for channel_name, aliases in dynamic_aliases.items():
+            aliases = [a for a in aliases if a]
+            if not aliases:
+                continue
+            if channel_name in alias_map:
+                alias_map[channel_name] = list(dict.fromkeys(alias_map[channel_name] + aliases))
+            else:
+                alias_map[channel_name] = list(dict.fromkeys(aliases))
 
         return alias_map
 
@@ -972,6 +1245,31 @@ class Plugin:
         if stream_country in accepted:
             return 0
         return 2
+
+    @staticmethod
+    def _filter_streams_by_country(streams, lineup_countries=None):
+        """Hard-filter concrete stream objects to allowed countries only.
+
+        Keep untagged streams. Keep compatible-country streams (US<->CA).
+        Drop explicit foreign-country streams.
+        """
+        if not lineup_countries:
+            return list(streams)
+
+        requested = {str(country).upper() for country in lineup_countries if country}
+        if not requested:
+            return list(streams)
+
+        accepted = set(requested)
+        for country in requested:
+            accepted |= _COMPATIBLE_COUNTRIES.get(country, set())
+
+        filtered = []
+        for stream in streams:
+            stream_country = detect_stream_country(stream.get('name', ''))
+            if stream_country is None or stream_country in accepted:
+                filtered.append(stream)
+        return filtered
 
     def _sort_streams_by_quality(self, streams, prioritize_quality=True, lineup_countries=None):
         """Sort streams by country affinity, then quality/source preference.
@@ -1420,11 +1718,12 @@ class Plugin:
                     ch_name = entry["name"]
                     ch_number = self._get_channel_number(settings, entry, assigner)
                     boost_number = self._parse_channel_number(entry.get("number")) if use_number_boost else None
+                    entry_country = self._get_entry_country(entry, lineup_countries)
 
                     matches = matcher.match_all_streams(
                         ch_name, unique_stream_names, alias_map,
                         channel_number=boost_number,
-                        lineup_country=lineup_countries,
+                        lineup_country=entry_country,
                     )
 
                     if matches:
@@ -1610,6 +1909,9 @@ class Plugin:
         unchanged = 0
         failed = 0
         synced_channel_ids = []
+        existing_channels = self._make_existing_channel_lookup(
+            Channel.objects.all().values('id', 'name', 'channel_group_id', 'channel_number')
+        )
 
         total_channels = sum(len(v) for v in lineup["categories"].values())
         progress = ProgressTracker(total_channels, "sync_channels", logger)
@@ -1624,7 +1926,7 @@ class Plugin:
 
                 try:
                     if dry_run:
-                        existing = Channel.objects.filter(name=ch_name, channel_group_id=group_id).values('id', 'channel_number').first()
+                        existing = self._get_existing_channel_record(existing_channels, ch_name, group_id, ch_number)
                         if existing:
                             synced_channel_ids.append(existing['id'])
                             if ch_number is not None and existing['channel_number'] != ch_number:
@@ -1634,12 +1936,25 @@ class Plugin:
                         else:
                             created += 1
                     else:
-                        defaults = {"channel_number": ch_number} if ch_number is not None else {}
+                        defaults = {}
+                        lookup = {
+                            "name": ch_name,
+                            "channel_group_id": group_id,
+                        }
+                        if ch_number is not None:
+                            lookup["channel_number"] = ch_number
+
                         ch, was_created = Channel.objects.get_or_create(
-                            name=ch_name,
-                            channel_group_id=group_id,
-                            defaults=defaults
+                            defaults=defaults,
+                            **lookup
                         )
+                        existing_channels[(ch_name, group_id)] = {
+                            'id': ch.id, 'name': ch.name, 'channel_group_id': group_id, 'channel_number': ch.channel_number
+                        }
+                        if ch.channel_number is not None:
+                            existing_channels[(ch_name, group_id, ch.channel_number)] = {
+                                'id': ch.id, 'name': ch.name, 'channel_group_id': group_id, 'channel_number': ch.channel_number
+                            }
                         synced_channel_ids.append(ch.id)
                         if was_created:
                             created += 1
@@ -1794,8 +2109,8 @@ class Plugin:
             lineup = self._load_lineup(settings, logger)
             prefix = self._get_group_prefix(settings, lineup)
             lineup_file = settings.get("lineup_file", "")
-            cc, _ = self._parse_lineup_filename(lineup_file)
-            country_suffix = cc.lower() if cc else "us"
+            lineup_countries, _ = self._parse_lineup_filename_countries(lineup_file)
+            entry_countries = self._collect_lineup_entry_countries(lineup, lineup_countries)
 
             # Get existing groups and channels (with logo and epg_data)
             existing_groups = {g['name']: g['id'] for g in ChannelGroup.objects.all().values('id', 'name')}
@@ -1809,7 +2124,9 @@ class Plugin:
             )
             channel_lookup = {}
             for ch in channel_qs:
-                channel_lookup[(ch.name, ch.channel_group_id)] = ch
+                channel_lookup.setdefault((ch.name, ch.channel_group_id), ch)
+                if ch.channel_number is not None:
+                    channel_lookup[(ch.name, ch.channel_group_id, ch.channel_number)] = ch
 
             # Pre-fetch: all existing logos by URL and by name (case-insensitive)
             existing_logos_by_url = {logo.url: logo for logo in Logo.objects.all()}
@@ -1818,18 +2135,23 @@ class Plugin:
                 existing_logos_by_name.setdefault(logo.name.lower(), logo)
 
             # Tier 3 prep: fetch tv-logos file list
-            country_dir = PluginConfig.COUNTRY_DIR_MAP.get(cc, "") if cc else ""
-            tv_logo_files = []
-            if country_dir:
+            tv_logo_files_by_country = {}
+            for country_code in sorted(entry_countries):
+                country_dir = PluginConfig.COUNTRY_DIR_MAP.get(country_code, "")
+                if not country_dir:
+                    logger.warning(
+                        f"{LOG_PREFIX} No tv-logos directory mapping for country code "
+                        f"'{country_code}'. Tier 3 disabled for that country."
+                    )
+                    continue
                 logger.info(f"{LOG_PREFIX} Fetching tv-logos file list for {country_dir}...")
-                tv_logo_files = fetch_tv_logos_filelist(
+                files = fetch_tv_logos_filelist(
                     PluginConfig.TV_LOGOS_REPO,
                     PluginConfig.TV_LOGOS_BRANCH,
                     country_dir,
                 )
-                logger.info(f"{LOG_PREFIX} Found {len(tv_logo_files)} logos in tv-logos/{country_dir}")
-            else:
-                logger.warning(f"{LOG_PREFIX} No tv-logos directory mapping for country code '{cc}'. Tier 3 disabled.")
+                tv_logo_files_by_country[country_code] = files
+                logger.info(f"{LOG_PREFIX} Found {len(files)} logos in tv-logos/{country_dir}")
 
             assigned_epg = 0
             assigned_manager = 0
@@ -1853,7 +2175,9 @@ class Plugin:
                         return {"status": "ok", "message": "Logo assignment cancelled by user."}
 
                     ch_name = entry["name"]
-                    ch = channel_lookup.get((ch_name, group_id))
+                    ch_number = self._parse_channel_number(entry.get("number"))
+                    entry_country = self._get_entry_country(entry, lineup_countries)
+                    ch = channel_lookup.get((ch_name, group_id, ch_number)) or channel_lookup.get((ch_name, group_id))
 
                     if not ch:
                         progress.update()
@@ -1893,7 +2217,10 @@ class Plugin:
                             source = "Logo Manager"
 
                     # Tier 3: tv-logos GitHub
-                    if not logo and tv_logo_files:
+                    tv_logo_files = tv_logo_files_by_country.get(entry_country, [])
+                    country_dir = PluginConfig.COUNTRY_DIR_MAP.get(entry_country, "")
+                    country_suffix = entry_country.lower() if entry_country else "us"
+                    if not logo and tv_logo_files and country_dir:
                         matched_file = match_channel_to_logo(ch_name, tv_logo_files, country_suffix)
                         if matched_file:
                             raw_url = build_logo_url(
@@ -2006,9 +2333,9 @@ class Plugin:
 
             # Get existing groups and channels
             existing_groups = {g['name']: g['id'] for g in ChannelGroup.objects.all().values('id', 'name')}
-            existing_channels = {}
-            for ch in Channel.objects.all().values('id', 'name', 'channel_group_id'):
-                existing_channels[(ch['name'], ch['channel_group_id'])] = ch['id']
+            existing_channels = self._make_existing_channel_lookup(
+                Channel.objects.all().values('id', 'name', 'channel_group_id', 'channel_number')
+            )
 
             total_channels = sum(len(v) for v in lineup["categories"].values())
             progress = ProgressTracker(total_channels, "apply_stream_match", logger)
@@ -2038,7 +2365,11 @@ class Plugin:
 
                     ch_name = entry["name"]
                     ch_number = self._parse_channel_number(entry.get("number")) if use_number_boost else None
-                    channel_id = existing_channels.get((ch_name, group_id))
+                    entry_country = self._get_entry_country(entry, lineup_countries)
+                    channel_record = self._get_existing_channel_record(
+                        existing_channels, ch_name, group_id, ch_number
+                    )
+                    channel_id = channel_record['id'] if channel_record else None
 
                     if not channel_id:
                         logger.debug(f"{LOG_PREFIX} Channel '{ch_name}' not in DB, skipping")
@@ -2051,7 +2382,7 @@ class Plugin:
                     matches = matcher.match_all_streams(
                         ch_name, unique_stream_names, alias_map,
                         channel_number=ch_number,
-                        lineup_country=lineup_countries,
+                        lineup_country=entry_country,
                     )
 
                     if matches:
@@ -2064,10 +2395,16 @@ class Plugin:
                                 stream_obj_copy['_match_type'] = mtype
                                 matched_stream_objs.append(stream_obj_copy)
 
+                        allowed_countries = [entry_country] if entry_country else lineup_countries
+                        matched_stream_objs = self._filter_streams_by_country(
+                            matched_stream_objs,
+                            allowed_countries,
+                        )
+
                         sorted_streams = self._sort_streams_by_quality(
                             matched_stream_objs,
                             prioritize_quality,
-                            lineup_countries=lineup_countries,
+                            lineup_countries=allowed_countries,
                         )
 
                         if not dry_run:
@@ -2215,12 +2552,14 @@ class Plugin:
             matcher = self._init_fuzzy_matcher(settings, logger)
             alias_map = self._build_alias_map(settings, logger)
             rate_limiter = SmartRateLimiter(settings.get("rate_limiting", PluginConfig.DEFAULT_RATE_LIMITING))
+            lineup_countries, _ = self._parse_lineup_filename_countries(settings.get("lineup_file", ""))
 
-            # Extract lineup country code for EPG country matching
-            lineup_file = settings.get("lineup_file", "")
-            lineup_cc, _ = self._parse_lineup_filename(os.path.basename(lineup_file))
-            if lineup_cc:
-                logger.info(f"{LOG_PREFIX} Lineup country code: {lineup_cc} (will prefer EPG entries with matching country)")
+            entry_countries = self._collect_lineup_entry_countries(lineup, lineup_countries)
+            if entry_countries:
+                logger.info(
+                    f"{LOG_PREFIX} EPG matching will prefer countries: "
+                    f"{', '.join(sorted(entry_countries))}"
+                )
 
             # Fetch filtered EPG data
             epg_data = self._get_filtered_epg_data(settings, logger)
@@ -2247,26 +2586,16 @@ class Plugin:
             except Exception:
                 pass
 
-            # Build EPG name list and name->entries lookup (only entries with program data)
-            epg_by_name = {}
-            for e in epg_data_with_programs:
-                epg_by_name.setdefault(e['name'], []).append(e)
-            unique_epg_names = list(epg_by_name.keys())
-
-            # Build fallback lookup from ALL EPG entries (for channels with no program-data match)
-            epg_by_name_all = {}
-            for e in epg_data:
-                epg_by_name_all.setdefault(e['name'], []).append(e)
-            unique_epg_names_all = list(epg_by_name_all.keys())
-
-            # Pre-normalize EPG names for matching performance
+            # Pre-normalize against both EPG names and tvg_ids.
+            all_epg_lookup = self._build_epg_candidate_lookup(epg_data)
+            unique_epg_names_all = list(all_epg_lookup.keys())
             matcher.precompute_normalizations(unique_epg_names_all)
 
             # Get existing groups and channels
             existing_groups = {g['name']: g['id'] for g in ChannelGroup.objects.all().values('id', 'name')}
-            existing_channels = {}
-            for ch in Channel.objects.all().values('id', 'name', 'channel_group_id', 'epg_data_id'):
-                existing_channels[(ch['name'], ch['channel_group_id'])] = ch
+            existing_channels = self._make_existing_channel_lookup(
+                Channel.objects.all().values('id', 'name', 'channel_group_id', 'channel_number', 'epg_data_id')
+            )
 
             total_channels = sum(len(v) for v in lineup["categories"].values())
             progress = ProgressTracker(total_channels, "apply_epg_match", logger)
@@ -2295,7 +2624,10 @@ class Plugin:
 
                     ch_name = entry["name"]
                     ch_number = self._parse_channel_number(entry.get("number")) if use_number_boost else None
-                    ch_data = existing_channels.get((ch_name, group_id))
+                    entry_country = self._get_entry_country(entry, lineup_countries)
+                    ch_data = self._get_existing_channel_record(
+                        existing_channels, ch_name, group_id, ch_number
+                    )
 
                     if not ch_data:
                         skipped_no_match += 1
@@ -2310,42 +2642,53 @@ class Plugin:
                         progress.update()
                         continue
 
-                    # Fuzzy match channel name against EPG names
-                    # (all candidates already have program data — pre-filtered above)
-                    matches = matcher.match_all_streams(
-                        ch_name, unique_epg_names, alias_map,
-                        channel_number=ch_number
-                    )
-
                     # Take best match (all candidates have program data)
                     best_epg = None
                     best_score = 0
                     best_method = None
                     has_program_data = True
 
-                    if matches:
-                        top_name, top_score, top_method = matches[0]
-                        top_entries = epg_by_name.get(top_name, [])
-                        if top_entries:
-                            best_epg = self._pick_epg_by_country(top_entries, lineup_cc)
-                            best_score = top_score
-                            best_method = top_method
+                    epg_data_program_country = self._filter_epg_entries_for_country(
+                        epg_data_with_programs, entry_country
+                    )
+                    epg_by_name = self._build_epg_candidate_lookup(epg_data_program_country)
+                    unique_epg_names = list(epg_by_name.keys())
+
+                    for query_variant in self._build_epg_query_variants(ch_name):
+                        matches = matcher.match_all_streams(
+                            query_variant, unique_epg_names, alias_map,
+                            channel_number=ch_number
+                        )
+                        if matches:
+                            best_epg, best_score, best_method = self._pick_epg_from_matches(
+                                matches, epg_by_name, entry_country, ch_name
+                            )
+                            if best_epg:
+                                break
 
                     # Fallback: if no program-data match, try ALL EPG entries
                     if not best_epg and unique_epg_names_all:
-                        fallback_matches = matcher.match_all_streams(
-                            ch_name, unique_epg_names_all, alias_map,
-                            channel_number=ch_number
+                        epg_data_all_country = self._filter_epg_entries_for_country(
+                            epg_data, entry_country
                         )
-                        if fallback_matches:
-                            top_name, top_score, top_method = fallback_matches[0]
-                            top_entries = epg_by_name_all.get(top_name, [])
-                            if top_entries:
-                                best_epg = self._pick_epg_by_country(top_entries, lineup_cc)
-                                best_score = top_score
-                                best_method = top_method
-                                has_program_data = False
-                                logger.debug(f"{LOG_PREFIX} EPG fallback (no program data): {ch_name} -> {best_epg['name']}")
+                        epg_by_name_all = self._build_epg_candidate_lookup(epg_data_all_country)
+                        unique_epg_names_all_country = list(epg_by_name_all.keys())
+                        for query_variant in self._build_epg_query_variants(ch_name):
+                            fallback_matches = matcher.match_all_streams(
+                                query_variant, unique_epg_names_all_country, alias_map,
+                                channel_number=ch_number
+                            )
+                            if fallback_matches:
+                                best_epg, best_score, best_method = self._pick_epg_from_matches(
+                                    fallback_matches, epg_by_name_all, entry_country, ch_name
+                                )
+                                if best_epg:
+                                    has_program_data = False
+                                    logger.debug(
+                                        f"{LOG_PREFIX} EPG fallback (no program data): "
+                                        f"{ch_name} -> {best_epg['name']}"
+                                    )
+                                    break
 
                     # Build CSV row
                     row = {
@@ -2353,6 +2696,7 @@ class Plugin:
                         "channel_number": ch_number or "",
                         "channel_group": group_name,
                         "matched_epg_name": best_epg['name'] if best_epg else "",
+                        "matched_tvg_id": best_epg.get('tvg_id', '') if best_epg else "",
                         "epg_source": epg_source_names.get(best_epg.get('epg_source'), '') if best_epg else "",
                         "confidence_score": best_score if best_epg else 0,
                         "has_program_data": "Yes" if (best_epg and has_program_data) else ("Fallback" if best_epg else "No"),
@@ -2395,7 +2739,7 @@ class Plugin:
                 self._export_csv(
                     f"lineuparr_epg_match_{timestamp}.csv",
                     csv_rows,
-                    ["channel_name", "channel_number", "channel_group", "matched_epg_name",
+                    ["channel_name", "channel_number", "channel_group", "matched_epg_name", "matched_tvg_id",
                      "epg_source", "confidence_score", "has_program_data", "match_method", "status"],
                     logger, settings,
                 )
@@ -2419,6 +2763,12 @@ class Plugin:
         lineup = self._load_lineup(settings, logger)
         prefix = self._get_group_prefix(settings, lineup)
         lineup_countries, _ = self._parse_lineup_filename_countries(settings.get("lineup_file", ""))
+        entry_country_by_channel = {}
+        for category, channels in lineup["categories"].items():
+            group_name = self._make_group_name(prefix, category)
+            for entry in channels:
+                key = (group_name, entry["name"], self._parse_channel_number(entry.get("number")))
+                entry_country_by_channel[key] = self._get_entry_country(entry, lineup_countries)
 
         # Find all Lineuparr-managed groups
         lineuparr_group_names = [
@@ -2441,6 +2791,9 @@ class Plugin:
             cs_entries = list(channel.channelstream_set.select_related('stream').all())
             if len(cs_entries) <= 1:
                 continue  # Nothing to sort
+            entry_country = entry_country_by_channel.get(
+                (channel.channel_group.name, channel.name, channel.channel_number)
+            )
 
             # Build stream dicts with stats for sorting
             stream_dicts = []
@@ -2454,11 +2807,16 @@ class Plugin:
                     '_m3u_priority': 999,
                 })
 
+            allowed_countries = [entry_country] if entry_country else lineup_countries
+            stream_dicts = self._filter_streams_by_country(stream_dicts, allowed_countries)
+            if not stream_dicts:
+                continue
+
             # Sort by quality
             sorted_streams = self._sort_streams_by_quality(
                 stream_dicts,
                 prioritize_quality,
-                lineup_countries=lineup_countries,
+                lineup_countries=allowed_countries,
             )
 
             # Check if order actually changed
