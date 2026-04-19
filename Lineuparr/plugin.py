@@ -54,6 +54,8 @@ class PluginConfig:
     DEFAULT_PRIORITIZE_QUALITY = True
     DEFAULT_RATE_LIMITING = "none"
     DEFAULT_CHANNEL_NUMBERING = "lineup"
+    DEFAULT_MATCH_SENSITIVITY = "exact"
+    DEFAULT_CUSTOM_ALIASES = "aliases.json"
 
     RATE_LIMIT_NONE = 0.0
     RATE_LIMIT_LOW = 0.1
@@ -327,7 +329,7 @@ class Plugin:
                 "id": "match_sensitivity",
                 "label": "Match Sensitivity",
                 "type": "select",
-                "default": "normal",
+                "default": PluginConfig.DEFAULT_MATCH_SENSITIVITY,
                 "options": [
                     {"value": "relaxed", "label": "Relaxed - more matches, more false positives"},
                     {"value": "normal", "label": "Normal - balanced"},
@@ -380,8 +382,8 @@ class Plugin:
                 "id": "custom_aliases",
                 "label": "Custom Channel Aliases (advanced)",
                 "type": "string",
-                "default": "",
-                "help_text": "JSON object or path to JSON file with extra names mapped to lineup channels. Leave blank to use built-in aliases only.",
+                "default": PluginConfig.DEFAULT_CUSTOM_ALIASES,
+                "help_text": "JSON object or path to JSON file with extra names mapped to lineup channels. Defaults to `aliases.json`; change or clear to override.",
             },
             {
                 "id": "epg_sources",
@@ -1007,7 +1009,7 @@ class Plugin:
 
     def _load_custom_aliases(self, settings):
         """Load custom aliases from inline JSON or JSON file path."""
-        custom_str = (settings.get("custom_aliases") or "").strip()
+        custom_str = (settings.get("custom_aliases") or PluginConfig.DEFAULT_CUSTOM_ALIASES).strip()
         if not custom_str:
             return None, None, None
 
@@ -1119,7 +1121,7 @@ class Plugin:
     def _init_fuzzy_matcher(self, settings, logger):
         """Create a configured FuzzyMatcher instance."""
         # Support both new select-based sensitivity and legacy numeric threshold
-        sensitivity = settings.get("match_sensitivity", "normal")
+        sensitivity = settings.get("match_sensitivity", PluginConfig.DEFAULT_MATCH_SENSITIVITY)
         threshold = self.SENSITIVITY_MAP.get(sensitivity)
         if threshold is None:
             # Fallback: try legacy numeric field
@@ -1330,7 +1332,7 @@ class Plugin:
                     f.write(f"# Lineup: {settings.get('lineup_file', '')}\n")
                     f.write(f"# Category Detail: {settings.get('category_detail', 'normal')}\n")
                     f.write(f"# Group Prefix: {settings.get('group_prefix', '') or '(auto)'}\n")
-                    f.write(f"# Match Sensitivity: {settings.get('match_sensitivity', 'normal')}\n")
+                    f.write(f"# Match Sensitivity: {settings.get('match_sensitivity', PluginConfig.DEFAULT_MATCH_SENSITIVITY)}\n")
                     f.write(f"# Quality Ordering: {settings.get('prioritize_quality', True)}\n")
                     f.write(f"# Rate Limiting: {settings.get('rate_limiting', 'none')}\n")
                     # M3U source names (not URLs)
@@ -1419,7 +1421,7 @@ class Plugin:
             errors += 1
 
         # Check match sensitivity
-        sensitivity = settings.get("match_sensitivity", "normal")
+        sensitivity = settings.get("match_sensitivity", PluginConfig.DEFAULT_MATCH_SENSITIVITY)
         threshold = self.SENSITIVITY_MAP.get(sensitivity)
         if threshold:
             results.append({"Setting": "Match Sensitivity", "Value": f"{sensitivity} ({threshold})", "Status": "OK"})
@@ -1470,7 +1472,7 @@ class Plugin:
             results.append({"Setting": "M3U Sources", "Value": "(all)", "Status": f"OK (using all - {stream_count} streams)"})
 
         # Check custom aliases
-        custom_str = (settings.get("custom_aliases") or "").strip()
+        custom_str = (settings.get("custom_aliases") or PluginConfig.DEFAULT_CUSTOM_ALIASES).strip()
         if custom_str:
             custom, source, error = self._load_custom_aliases(settings)
             if isinstance(custom, dict):
