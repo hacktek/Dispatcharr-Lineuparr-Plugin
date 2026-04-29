@@ -3081,6 +3081,16 @@
         "name": "U&YESTERDAY",
         "number": 926,
         "country": "UK"
+      },
+      {
+        "name": "Global BC",
+        "number": 927,
+        "country": "CA"
+      },
+      {
+        "name": "CBC Vancouver",
+        "number": 928,
+        "country": "CA"
       }
     ],
     "Reality & Lifestyle": [

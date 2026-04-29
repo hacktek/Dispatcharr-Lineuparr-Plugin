@@ -4,6 +4,8 @@
   "Bloomberg TV": ["Bloomberg Television","Bloomberg HD","Bloomberg USA"],
   "BNN": ["BNN Bloomberg","BNN Bloomberg HD"],
   "Bloomberg": ["Bloomberg EU","Bloomberg Europe"],
+  "Global BC": ["Global British Columbia", "Global Vancouver", "Global - Vancouver", "CHAN-DT", "CHAN"],
+  "CBC Vancouver": ["CBC - Vancouver", "Cbc - Vancouver", "CBUT-DT", "CBUT"],
   "HISTORY Channel, The": ["HISTORY", "History Channel HD", "History US"],
   "My Local Station": ["WABC", "WABC-TV", "ABC 7 New York"],
   "NHL Anaheim Ducks": ["Anaheim Ducks"],
