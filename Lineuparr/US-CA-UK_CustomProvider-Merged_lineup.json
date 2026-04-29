@@ -1,9 +1,9 @@
 {
-  "package": "Merged CA + US + UK lineup",
+  "package": "Merged CA + US + UK + ES lineup",
   "date": "2026-04-16",
-  "description": "Merged lineup from CA Telus Optik, US DISH Top 250, US DirecTV Premier, US Verizon FIOS, and UK SkyTV. Duplicate channels are retained once per country and each entry includes a country field for country-aware stream, logo, and EPG matching.",
+  "description": "Merged lineup from CA Telus Optik, US DISH Top 250, US DirecTV Premier, US Verizon FIOS, UK SkyTV, and selected Spain sports channels. Duplicate channels are retained once per country and each entry includes a country field for country-aware stream, logo, and EPG matching.",
   "source": "PiratesIRC/Dispatcharr-Lineuparr-Plugin",
-  "notes": "Source order: CA_Telus-Optik, US_DISH-Top250, US_DirecTV-Premier, US_Verizon-FIOS, UK_SkyTV. Dedupe scope is per category + country + normalized channel name, so the same channel may appear multiple times when it exists in multiple countries. Channel numbers are reassigned into contiguous category blocks for stable uniqueness inside the merged lineup.",
+  "notes": "Source order: CA_Telus-Optik, US_DISH-Top250, US_DirecTV-Premier, US_Verizon-FIOS, UK_SkyTV, ES custom sports. Dedupe scope is per category + country + normalized channel name, so the same channel may appear multiple times when it exists in multiple countries. Channel numbers are reassigned into contiguous category blocks for stable uniqueness inside the merged lineup.",
   "categories": {
     "News": [
       {
@@ -1160,6 +1160,46 @@
         "number": 350,
         "notes": "part-time",
         "country": "UK"
+      },
+      {
+        "name": "Movistar Liga de Campeones 1",
+        "number": 351,
+        "country": "ES"
+      },
+      {
+        "name": "Movistar Liga de Campeones 2",
+        "number": 352,
+        "country": "ES"
+      },
+      {
+        "name": "Movistar La Liga 1",
+        "number": 353,
+        "country": "ES"
+      },
+      {
+        "name": "Movistar La Liga 2",
+        "number": 354,
+        "country": "ES"
+      },
+      {
+        "name": "DAZN 1",
+        "number": 355,
+        "country": "ES"
+      },
+      {
+        "name": "DAZN 2",
+        "number": 356,
+        "country": "ES"
+      },
+      {
+        "name": "DAZN La Liga",
+        "number": 357,
+        "country": "ES"
+      },
+      {
+        "name": "DAZN La Liga 2",
+        "number": 358,
+        "country": "ES"
       }
     ],
     "Regional Sports": [

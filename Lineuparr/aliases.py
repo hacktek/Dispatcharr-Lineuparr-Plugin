@@ -74,6 +74,12 @@ CHANNEL_ALIASES = {
     "Sportsnet 360": ["Sportsnet 360"],
     "Tennis Channel HD": ["Tennis Channel", "Tennis Ch"],
     "TUDN": ["TUDN", "Univision Deportes"],
+    "Movistar Liga de Campeones 1": ["M. Liga de Campeones 1", "M+ Liga de Campeones 1"],
+    "Movistar Liga de Campeones 2": ["M. Liga de Campeones 2", "M+ Liga de Campeones 2"],
+    "Movistar La Liga 1": ["M. LaLiga 1", "M+ LaLiga 1"],
+    "Movistar La Liga 2": ["M. LaLiga 2", "M+ LaLiga 2"],
+    "DAZN La Liga": ["DAZN LaLiga","DAZN LaLiga HD"],
+    "DAZN La Liga 2": ["DAZN LaLiga 2"],
 
     # --- Movies ---
     "Cinemax": ["Cinemax", "Cinemax US"],

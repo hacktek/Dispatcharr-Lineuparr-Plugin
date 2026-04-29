@@ -1681,8 +1681,12 @@ class Plugin:
             streams = self._get_all_streams(settings, logger)
             assigner = self._init_assigner_state(settings)
             lineup_countries, _ = self._parse_lineup_filename_countries(settings.get("lineup_file", ""))
-            if lineup_countries:
-                logger.info(f"{LOG_PREFIX} Filtering streams to countries: {', '.join(lineup_countries)}")
+            entry_countries = self._collect_lineup_entry_countries(lineup, lineup_countries)
+            if entry_countries:
+                logger.info(
+                    f"{LOG_PREFIX} Country-aware stream matching will use lineup countries: "
+                    f"{', '.join(sorted(entry_countries))}"
+                )
 
             if not streams:
                 logger.error(f"{LOG_PREFIX} No streams found. Check M3U sources.")
@@ -1764,7 +1768,7 @@ class Plugin:
 
             progress.finish()
 
-            if lineup_countries and matcher.country_filter_drops:
+            if entry_countries and matcher.country_filter_drops:
                 logger.info(
                     f"{LOG_PREFIX} Country filter dropped "
                     f"{matcher.country_filter_drops} cross-country candidate(s)"
@@ -2312,8 +2316,12 @@ class Plugin:
             alias_map = self._build_alias_map(settings, logger)
             rate_limiter = SmartRateLimiter(settings.get("rate_limiting", PluginConfig.DEFAULT_RATE_LIMITING))
             lineup_countries, _ = self._parse_lineup_filename_countries(settings.get("lineup_file", ""))
-            if lineup_countries:
-                logger.info(f"{LOG_PREFIX} Filtering streams to countries: {', '.join(lineup_countries)}")
+            entry_countries = self._collect_lineup_entry_countries(lineup, lineup_countries)
+            if entry_countries:
+                logger.info(
+                    f"{LOG_PREFIX} Country-aware stream matching will use lineup countries: "
+                    f"{', '.join(sorted(entry_countries))}"
+                )
 
             # Get streams
             all_streams = self._get_all_streams(settings, logger)
@@ -2454,7 +2462,7 @@ class Plugin:
 
             progress.finish()
 
-            if lineup_countries and matcher.country_filter_drops:
+            if entry_countries and matcher.country_filter_drops:
                 logger.info(
                     f"{LOG_PREFIX} Country filter dropped "
                     f"{matcher.country_filter_drops} cross-country candidate(s)"
