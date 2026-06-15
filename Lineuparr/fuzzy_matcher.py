@@ -65,7 +65,7 @@ MISC_PATTERNS = [
 # country filter to treat as explicit non-matching markers.
 _KNOWN_COUNTRY_CODES = {
     "US", "UK", "CA", "AU", "DE", "FR", "IT", "ES", "NL", "BR", "MX", "IN",
-    "IE", "SE", "NO", "DK", "PT", "PL", "AT", "CH", "BE", "FI", "AR", "CO",
+    "IE", "SE", "NO", "DK", "PT", "PL", "AT", "CH", "BE", "FI", "AR", "CO", "CR",
     "CAR", "LAT",
 }
 
@@ -73,7 +73,7 @@ _KNOWN_COUNTRY_CODES = {
 _ISO3_TO_ISO2 = {
     "USA": "US", "MEX": "MX", "IRE": "IE", "GER": "DE", "FRA": "FR",
     "ITA": "IT", "ESP": "ES", "NLD": "NL", "BRA": "BR", "IND": "IN",
-    "ARG": "AR", "COL": "CO",
+    "ARG": "AR", "COL": "CO", "CRI": "CR",
 }
 
 # (PLUTO <COUNTRY>) full-name variants seen in the M3U.
@@ -92,6 +92,8 @@ _PLUTO_COUNTRY_MAP = {
 _COMPATIBLE_COUNTRIES = {
     "US": {"CA"},
     "CA": {"US"},
+    "LAT": {"MX"},
+    "MX": {"LAT"},
 }
 
 _PRESERVED_REGIONAL_PARENS = re.compile(

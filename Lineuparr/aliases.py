@@ -203,7 +203,8 @@ CHANNEL_ALIASES = {
     "GSN": ["GSN", "Game Show Network"],
     "Pop": ["Pop TV", "Pop TV East"],
     "ReelzChannel": ["Reelz", "ReelzChannel"],
-    "Telemundo": ["Telemundo"],
+    "Telemundo": ["Telemundo", "Telemundo East", "Telemundo (East)"],
+    "Azteca 7": ["[LAT] LATINO AZTECA 7", "[LAT] LATINO  AZTECA 7", "[MEX] AZTECA 7"],
 
     # --- Faith & Family ---
     "FETV": ["FETV", "Family Entertainment Television", "Family Entertainment TV"],
