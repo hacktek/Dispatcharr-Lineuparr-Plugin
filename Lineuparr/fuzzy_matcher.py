@@ -102,6 +102,16 @@ _PRESERVED_REGIONAL_PARENS = re.compile(
 )
 
 
+def _adult_swim_required_country(lineup_name):
+    """Adult Swim feeds are distinct across US/CA, unlike most border channels."""
+    key = (lineup_name or "").strip().lower()
+    if key == "adult swim canada":
+        return "CA"
+    if key in {"adult swim east", "adult swim west"}:
+        return "US"
+    return None
+
+
 def _normalize_country_token(tok):
     """Map a raw prefix token to a whitelisted ISO-2 code, else None."""
     tok = tok.upper()
@@ -688,6 +698,16 @@ class FuzzyMatcher:
                     # Apply channel number boost
                     boost = self._channel_number_boost(candidate, channel_number)
                     all_matches[candidate] = (min(score + boost, 100), mtype)
+
+        adult_swim_country = _adult_swim_required_country(lineup_name)
+        if adult_swim_country:
+            kept = {}
+            for name, val in all_matches.items():
+                if detect_stream_country(name) == adult_swim_country:
+                    kept[name] = val
+                else:
+                    self.country_filter_drops += 1
+            all_matches = kept
 
         # Filter out wrong-country matches. A stream whose name carries a
         # recognized country marker (e.g. "UK: Discovery Channel", "(IN) Bloomberg",

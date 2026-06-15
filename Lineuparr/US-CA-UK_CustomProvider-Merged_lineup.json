@@ -2483,6 +2483,21 @@
         "name": "Sky Kids",
         "number": 757,
         "country": "UK"
+      },
+      {
+        "name": "Adult Swim Canada",
+        "number": 758,
+        "country": "CA"
+      },
+      {
+        "name": "Adult Swim East",
+        "number": 759,
+        "country": "US"
+      },
+      {
+        "name": "Adult Swim West",
+        "number": 760,
+        "country": "US"
       }
     ],
     "Entertainment": [
